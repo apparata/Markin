@@ -29,11 +29,9 @@ Headers are available in 6 hierarchical levels:
 
 Code can be written in code blocks. The language can be specified after the opening ``` sequence.
 
-```
-\`\`\`Swift
+<pre><code>```Swift
 let a = 7
-\`\`\`
-```
+```</code></pre>
 
 ### Text Paragraphs
 
@@ -59,7 +57,7 @@ Currently, bold and italic text can't be nested.
 Italic text is achieved by using the marker \_ as follows:
 
 ```
-The word *bold* is bold in this sentence.
+The word _italic_ is in italics in this sentence.
 ```
 
 Currently, **bold** and _italic_ text can't be nested.
