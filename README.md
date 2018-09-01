@@ -6,13 +6,15 @@ Markin is a Swift library for parsing a Markdown-like text format.
 
 The library is small, supports Swift Package Manager, and does not have any third party dependencies.
 
-Trivia: It's called Markin because I was inspired by Linus Torvalds in naming my creation after myself, but replacing one of the letters in the name.
+It's called Markin because I was inspired by Linus Torvalds in naming my creation after myself, but replacing one of the letters in the name. :)
 
 ## License
 
 Markin is available under the MIT License. See the LICENSE file in the repository for details.
 
 ## The Markin Format
+
+The format is based on Markdown, but I have plans to extend it. The core syntax will stay the same, however.
 
 ### Headers
 
