@@ -4,9 +4,70 @@
 
 Markin is a Swift library for parsing a Markdown-like text format.
 
-Trivia: It's called Markin because I was inspired by Linus Torvalds to name my creation after myself, but replace one of the letters in the name.
+Trivia: It's called Markin because I was inspired by Linus Torvalds in naming my creation after myself, but replacing one of the letters in the name.
 
 ## License
 
 Markin is available under the MIT License. See the LICENSE file in the repository for details.
 
+## The Markin Format
+
+### Headers
+
+Headers are available in 6 hierarchical levels:
+
+```
+# This is the largest header
+## This is the second largest header
+### This is the third largest header
+#### This is the fourth largest header
+##### This is the fifth largest header
+####### This is the sixth largest header.
+```
+
+### Code Blocks
+
+Code can be written in code blocks. The language can be specified after the opening ``` sequence.
+
+```
+\`\`\`Swift
+let a = 7
+\`\`\`
+```
+
+### Text Paragraphs
+
+A text paragraph consists of consecutive lines of text, terminated by a blank line.
+
+```
+This is the first sentence of the paragraph. This is the second sentence.
+This is the third sentence, also in the paragraph.
+```
+
+### Bold Text
+
+Bold text is achieved by using the marker \* as follows:
+
+```
+The word *bold* is bold in this sentence.
+```
+
+Currently, bold and italic text can't be nested.
+
+### Italic Text
+
+Italic text is achieved by using the marker \_ as follows:
+
+```
+The word *bold* is bold in this sentence.
+```
+
+Currently, **bold** and _italic_ text can't be nested.
+
+### Inline Code
+
+Code can be written inline using single backticks \` like this:
+
+```
+This is text that has `inline code` in it.
+```
