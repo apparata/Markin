@@ -37,7 +37,19 @@ do {
 }
 ```
 
+### Back to Markin from Parsed Tree
+
+```Swift
+let document = try parser.parse(exampleMarkin)
+let markin = document.formatAsMarkin()
+```
+
 ### Rendering HTML
+
+```Swift
+let document = try parser.parse(exampleMarkin)
+let html = document.formatAsHTML()
+```
 
 ## The Markin Format
 
