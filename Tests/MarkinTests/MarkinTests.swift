@@ -6,6 +6,8 @@ final class MarkinTests: XCTestCase {
     func testExample() {
         let exampleMarkin = """
 
+%TOC
+
 # Swift Package Manager Cheat Sheet
 
 ## Banana

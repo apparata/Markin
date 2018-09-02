@@ -24,18 +24,11 @@
 
 import Foundation
 
-public enum MarkinError: Error {
-    case nonTerminatedInline(String)
-    case failedToParseMarkin
-    case invalidEscapedCharacter
-    case failedToParseParagraph
-}
-
 public class MarkinParser {
     
     private let debugMode = false
     
-    class Context {
+    private class Context {
 
         let markin: String
         let scanner: Scanner
@@ -56,7 +49,7 @@ public class MarkinParser {
         return blocks
     }
     
-    func parseBlocks(_ scanner: Scanner, _ context: Context) throws -> DocumentElement {
+    private func parseBlocks(_ scanner: Scanner, _ context: Context) throws -> DocumentElement {
         if debugMode { print("[parseBlocks] Enter") }
         
         var blocks: [BlockElement] = []
@@ -64,7 +57,7 @@ public class MarkinParser {
         while true {
             if scanner.skipEmptyLine() {
                 // Do nothing, basically.
-                print("[parseBlocks] Skipping empty line")
+                if debugMode { print("[parseBlocks] Skipping empty line") }
             } else if let block = try parseBlock(scanner, context) {
                 print(block)
                 blocks.append(block)
@@ -79,10 +72,12 @@ public class MarkinParser {
         return DocumentElement(blocks: blocks)
     }
     
-    func parseBlock(_ scanner: Scanner, _ context: Context) throws -> BlockElement? {
+    private func parseBlock(_ scanner: Scanner, _ context: Context) throws -> BlockElement? {
         if debugMode { print("[parseBlock] Enter: " + scanner.peekNext(20) + "...") }
         
-        if let header = try parseHeader(scanner, context) {
+        if let tableOfContents = try parseTableOfContents(scanner, context) {
+            return tableOfContents
+        } else if let header = try parseHeader(scanner, context) {
             return header
         } else if let codeBlock = parseCodeBlock(scanner, context) {
             return codeBlock
@@ -99,7 +94,21 @@ public class MarkinParser {
         return nil
     }
     
-    func parseHeader(_ scanner: Scanner, _ context: Context) throws -> HeaderElement? {
+    private func parseTableOfContents(_ scanner: Scanner, _ context: Context) throws -> TableOfContentsElement? {
+        if debugMode { print("[parseTableOfContents] Enter: " + scanner.peekNext(20) + "...") }
+        
+        guard scanner.scan("%TOC") else {
+            return nil
+        }
+        
+        guard scanner.skipWhitespaceAndThenNewLine() else {
+            return nil
+        }
+        
+        return TableOfContentsElement()
+    }
+    
+    private func parseHeader(_ scanner: Scanner, _ context: Context) throws -> HeaderElement? {
         if debugMode { print("[parseHeader] Enter: " + scanner.peekNext(20) + "...") }
         
         let level: Int
@@ -125,7 +134,7 @@ public class MarkinParser {
         return HeaderElement(level: level, content: paragraph)
     }
     
-    func parseCodeBlock(_ scanner: Scanner, _ context: Context) -> CodeBlockElement? {
+    private func parseCodeBlock(_ scanner: Scanner, _ context: Context) -> CodeBlockElement? {
         if debugMode { print("[parseCodeBlock] Enter: " + scanner.peekNext(20) + "...") }
         
         guard scanner.scan("```"), let language = scanner.scanUpToNewLine() else {
@@ -140,7 +149,7 @@ public class MarkinParser {
             return nil
         }
         
-        _ = scanner.scanUpToNewLine()
+        _ = scanner.skipThroughNewLine()
 
         var codeLanguage: String? = nil
         let trimmedLanguage = language.trimmingCharacters(in: .whitespaces)
@@ -151,28 +160,29 @@ public class MarkinParser {
         return CodeBlockElement(language: codeLanguage, content: code)
     }
 
-    func parseBlockQuote(_ scanner: Scanner, _ context: Context) -> BlockQuoteElement? {
+    private func parseBlockQuote(_ scanner: Scanner, _ context: Context) -> BlockQuoteElement? {
         if debugMode { print("[parseBlockQuote] Enter") }
         return nil
     }
 
-    func parseList(_ scanner: Scanner, _ context: Context) -> ListElement? {
+    private func parseList(_ scanner: Scanner, _ context: Context) -> ListElement? {
         if debugMode { print("[parseList] Enter") }
         return nil
     }
 
-    func parseHorizontalRule(_ scanner: Scanner, _ context: Context) -> HorizontalRuleElement? {
+    private func parseHorizontalRule(_ scanner: Scanner, _ context: Context) -> HorizontalRuleElement? {
         if debugMode { print("[parseHorizontalRule] Enter: " + scanner.peekNext(20) + "...") }
         
         let position = scanner.scanLocation
         if scanner.scanUpToNewLine() == "---" {
+            _ = scanner.scanNewLine()
             return HorizontalRuleElement()
         }
         scanner.scanLocation = position
         return nil
     }
 
-    func parseParagraph(_ scanner: Scanner, _ context: Context) throws -> ParagraphElement? {
+    private func parseParagraph(_ scanner: Scanner, _ context: Context) throws -> ParagraphElement? {
         if debugMode { print("[parseParagraph] Enter: " + scanner.peekNext(20) + "...") }
         
         var content: [InlineElement] = []
@@ -204,7 +214,7 @@ public class MarkinParser {
         }
     }
     
-    func parseBold(_ scanner: Scanner, _ context: Context) throws -> BoldElement? {
+    private func parseBold(_ scanner: Scanner, _ context: Context) throws -> BoldElement? {
         if debugMode { print("[parseBold] Enter: " + scanner.peekNext(20) + "...") }
         
         guard scanner.scan("*") else {
@@ -224,7 +234,7 @@ public class MarkinParser {
         return BoldElement(boldText)
     }
 
-    func parseItalic(_ scanner: Scanner, _ context: Context) throws -> ItalicElement? {
+    private func parseItalic(_ scanner: Scanner, _ context: Context) throws -> ItalicElement? {
         if debugMode { print("[parseItalic] Enter: " + scanner.peekNext(20) + "...") }
         
         guard scanner.scan("_") else {
@@ -244,7 +254,7 @@ public class MarkinParser {
         return ItalicElement(italicText)
     }
 
-    func parseCode(_ scanner: Scanner, _ context: Context) throws -> CodeElement? {
+    private func parseCode(_ scanner: Scanner, _ context: Context) throws -> CodeElement? {
         
         if debugMode { print("[parseCode] Enter: " + scanner.peekNext(20) + "...") }
         
@@ -265,7 +275,7 @@ public class MarkinParser {
         return CodeElement(code)
     }
     
-    func parseText(_ scanner: Scanner, _ context: Context) throws -> TextElement? {
+    private func parseText(_ scanner: Scanner, _ context: Context) throws -> TextElement? {
         
         if debugMode {  print("[parseText] (\(scanner.scanLocation)) Enter: " + scanner.peekNext(20) + "...") }
         

@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		5BF4A9CE213BCEC200B7EFFF /* MarkinError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF4A9CD213BCEC200B7EFFF /* MarkinError.swift */; };
+		5BF4A9D0213BCFB900B7EFFF /* TableOfContentsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF4A9CF213BCFB900B7EFFF /* TableOfContentsElement.swift */; };
 		OBJ_40 /* Scanner+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Scanner+Helpers.swift */; };
 		OBJ_41 /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* String+Subscript.swift */; };
 		OBJ_42 /* BlockElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* BlockElement.swift */; };
@@ -62,6 +64,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5BF4A9CD213BCEC200B7EFFF /* MarkinError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkinError.swift; sourceTree = "<group>"; };
+		5BF4A9CF213BCFB900B7EFFF /* TableOfContentsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentsElement.swift; sourceTree = "<group>"; };
 		"Markin::Markin::Product" /* Markin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Markin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Markin::MarkinTests::Product" /* MarkinTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = MarkinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Scanner+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scanner+Helpers.swift"; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 				OBJ_24 /* MarkinElement.swift */,
 				OBJ_25 /* ParagraphElement.swift */,
 				OBJ_26 /* TextElement.swift */,
+				5BF4A9CF213BCFB900B7EFFF /* TableOfContentsElement.swift */,
 			);
 			path = "Markin Elements";
 			sourceTree = "<group>";
@@ -178,6 +183,7 @@
 				OBJ_9 /* Internal Extensions */,
 				OBJ_12 /* Markin Elements */,
 				OBJ_27 /* MarkinParser.swift */,
+				5BF4A9CD213BCEC200B7EFFF /* MarkinError.swift */,
 			);
 			name = Markin;
 			path = Sources/Markin;
@@ -277,11 +283,13 @@
 			files = (
 				OBJ_40 /* Scanner+Helpers.swift in Sources */,
 				OBJ_41 /* String+Subscript.swift in Sources */,
+				5BF4A9CE213BCEC200B7EFFF /* MarkinError.swift in Sources */,
 				OBJ_42 /* BlockElement.swift in Sources */,
 				OBJ_43 /* BlockQuoteElement.swift in Sources */,
 				OBJ_44 /* BoldElement.swift in Sources */,
 				OBJ_45 /* CodeBlockElement.swift in Sources */,
 				OBJ_46 /* CodeElement.swift in Sources */,
+				5BF4A9D0213BCFB900B7EFFF /* TableOfContentsElement.swift in Sources */,
 				OBJ_47 /* DocumentElement.swift in Sources */,
 				OBJ_48 /* HeaderElement.swift in Sources */,
 				OBJ_49 /* HorizontalRuleElement.swift in Sources */,

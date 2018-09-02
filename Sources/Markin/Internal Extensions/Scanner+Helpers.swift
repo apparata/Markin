@@ -51,7 +51,7 @@ extension Scanner {
         defer {
             scanLocation = positionBefore
         }
-        _ = scanCharacters(in: " ")
+        _ = scanWhiteSpace()
         if scanNewLine() {
             return true
         }
@@ -93,6 +93,10 @@ extension Scanner {
         return text
     }
     
+    func scanWhiteSpace() -> Bool {
+        return scanCharacters(in: " \t")
+    }
+    
     func scanNewLine() -> Bool {
         return scanString("\n", into: nil)
     }
@@ -101,10 +105,24 @@ extension Scanner {
         return scanUpTo("\n")
     }
     
+    func skipThroughNewLine() -> Bool {
+        let positionBefore = scanLocation
+        _ = scanUpToNewLine()
+        guard scanNewLine() else {
+            scanLocation = positionBefore
+            return false
+        }
+        return true
+    }
+    
+    func skipWhitespaceAndThenNewLine() -> Bool {
+        return skipEmptyLine()
+    }
+    
     func skipEmptyLine() -> Bool {
         let positionBefore = scanLocation
-        _ = scanCharacters(in: " ")
-        guard scan("\n") else {
+        _ = scanWhiteSpace()
+        guard scanNewLine() else {
             scanLocation = positionBefore
             return false
         }
