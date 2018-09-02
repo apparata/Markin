@@ -68,4 +68,8 @@ public class CodeElement: InlineElement {
         let string = indent + "<code>\(content.htmlEntityEncoded())</code>"
         return string
     }
+    
+    public override func formatAsText() -> String {
+        return content
+    }
 }

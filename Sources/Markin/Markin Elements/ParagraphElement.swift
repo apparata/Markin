@@ -125,4 +125,17 @@ public class ParagraphElement: BlockElement, ListEntryCompliant {
         }
         return string
     }
+    
+    public func formatAsText() -> String {
+        var string = ""
+        var previousElement: InlineElement?
+        for element in content {
+            if previousElement is TextElement && element is TextElement {
+                string += "\n"
+            }
+            string += element.formatAsText()
+            previousElement = element
+        }
+        return string
+    }
 }

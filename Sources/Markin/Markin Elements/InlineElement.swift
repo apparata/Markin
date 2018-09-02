@@ -39,5 +39,9 @@ public class InlineElement: MarkinElement {
     public override func encode(to encoder: Encoder) throws {
         try super.encode(to: encoder)
     }
+    
+    public func formatAsText() -> String {
+        return ""
+    }
 }
 

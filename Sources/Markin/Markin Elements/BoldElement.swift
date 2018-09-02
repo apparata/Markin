@@ -71,4 +71,8 @@ public class BoldElement: InlineElement {
         let string = indent + "<strong>\(content.formatAsHTML(document))</strong>"
         return string
     }
+    
+    public override func formatAsText() -> String {
+        return content.formatAsText()
+    }
 }

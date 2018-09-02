@@ -71,4 +71,8 @@ public class ItalicElement: InlineElement {
         let string = indent + "<em>\(content.formatAsHTML(document))</em>"
         return string
     }
+    
+    public override func formatAsText() -> String {
+        return content.formatAsText()
+    }
 }
