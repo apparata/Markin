@@ -22,8 +22,7 @@ Markin is available under the MIT License. See the LICENSE file in the repositor
 
 Simply instantiate a parser and call the `parse()` method with a string in Markin format as a parameter:
 
-```
-
+```Swift
 let exampleMarkin = """
 # This is a Header
 
@@ -36,7 +35,6 @@ do {
 } catch {
     print(error)
 }
-
 ```
 
 ### Rendering HTML
