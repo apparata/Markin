@@ -24,6 +24,8 @@
 
 import Foundation
 
+/// The `MarkinParser` parses Markin formatted text strings. The result is
+/// a tree of element objects with `DocumentElement` as its root.
 public class MarkinParser {
     
     private let debugMode = false
@@ -43,6 +45,12 @@ public class MarkinParser {
     public init() {
     }
     
+    /// Parses Markin formatted text strings. The result is
+    /// a tree of element objects with `DocumentElement` as its root.
+    ///
+    /// - parameter markin: Markin formatted string.
+    /// - returns: A `DocumentElement` as the root of an element tree
+    ///            representing the Markin string.
     public func parse(_ markin: String) throws -> DocumentElement {
         
         let context = Context(markin: markin + "\n")

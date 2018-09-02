@@ -24,6 +24,15 @@
 
 import Foundation
 
+/// A text paragraph consists of consecutive lines of text, terminated by a
+/// blank line.
+///
+/// ```
+/// This is the first sentence of the paragraph. This is the second sentence.
+/// This is the third sentence, also in the paragraph.
+///
+/// This is a second paragraph.
+/// ```
 public class ParagraphElement: BlockElement, ListEntryCompliant {
     
     public var content: [InlineElement]
@@ -73,10 +82,12 @@ public class ParagraphElement: BlockElement, ListEntryCompliant {
     
     // MARK: - Formatting
 
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         return formatAsMarkin(lineSeparator: "\n")
     }
     
+    /// Transform the element and its children to a Markin formatted string.
     public func formatAsMarkin(lineSeparator: String) -> String {
         var string = ""
         var previousElement: InlineElement?
@@ -91,6 +102,8 @@ public class ParagraphElement: BlockElement, ListEntryCompliant {
         return string
     }
 
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "PARAGRAPH(\n"
@@ -101,6 +114,7 @@ public class ParagraphElement: BlockElement, ListEntryCompliant {
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         return formatAsHTML(document, level: level, tag: "p")
     }
@@ -126,6 +140,7 @@ public class ParagraphElement: BlockElement, ListEntryCompliant {
         return string
     }
     
+    /// Render the element and its children as flat text.
     public func formatAsText() -> String {
         var string = ""
         var previousElement: InlineElement?

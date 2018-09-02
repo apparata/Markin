@@ -24,6 +24,11 @@
 
 import Foundation
 
+/// Code can be written inline using single backticks \` like this:
+///
+/// ```
+/// This is text that has `inline code` in it.
+/// ```
 public class CodeElement: InlineElement {
     
     public var content: String
@@ -53,22 +58,27 @@ public class CodeElement: InlineElement {
     
     // MARK: - Formatting
 
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         return "`" + content + "`"
     }
 
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string = indent + "CODE(\(content))\n"
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string = indent + "<code>\(content.htmlEntityEncoded())</code>"
         return string
     }
     
+    /// Render the element and its children as flat text.
     public override func formatAsText() -> String {
         return content
     }

@@ -96,6 +96,8 @@ A text paragraph consists of consecutive lines of text, terminated by a blank li
 ```
 This is the first sentence of the paragraph. This is the second sentence.
 This is the third sentence, also in the paragraph.
+
+This is a second paragraph.
 ```
 
 ### Block Quotes
@@ -130,6 +132,14 @@ Ordered lists:
     1. First nested list entry
     1. Second nested list entry
 1. Third list entry
+```
+
+### Horizontal Rule
+
+A horizontal divider line is written as three dashes on a separate line:
+
+```
+---
 ```
 
 ### Code Blocks

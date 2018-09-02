@@ -24,6 +24,14 @@
 
 import Foundation
 
+/// Code can be written in code blocks. The language can be specified after the
+/// opening ``` sequence. Since the
+///
+/// ```
+/// ```Swift
+/// let a = 7
+/// ```                                                                    //
+/// ```
 public class CodeBlockElement: BlockElement {
     
     public var language: String?
@@ -59,6 +67,7 @@ public class CodeBlockElement: BlockElement {
     
     // MARK: - Formatting
 
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         var string = "```\(language ?? "")\n"
         string += content
@@ -66,6 +75,8 @@ public class CodeBlockElement: BlockElement {
         return string
     }
     
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "CODEBLOCK(language: \(language ?? "N/A"),\n"
@@ -74,6 +85,7 @@ public class CodeBlockElement: BlockElement {
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string: String

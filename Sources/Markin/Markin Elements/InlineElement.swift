@@ -24,6 +24,8 @@
 
 import Foundation
 
+/// The InlineElement is to be used as a base object for elements such as
+/// bold, italic, code, and text, that are meant to be rendered inline.
 public class InlineElement: MarkinElement {
     
     // MARK: - Initialization
@@ -40,6 +42,7 @@ public class InlineElement: MarkinElement {
         try super.encode(to: encoder)
     }
     
+    /// Render the element and its children as flat text.
     public func formatAsText() -> String {
         return ""
     }

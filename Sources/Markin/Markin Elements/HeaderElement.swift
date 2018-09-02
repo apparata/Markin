@@ -24,10 +24,22 @@
 
 import Foundation
 
+/// Headers are available in 6 hierarchical levels:
+///
+/// ```
+/// # This is the largest header
+/// ## This is the second largest header
+/// ### This is the third largest header
+/// #### This is the fourth largest header
+/// ##### This is the fifth largest header
+/// ####### This is the sixth largest header.
+/// ```
 public class HeaderElement: BlockElement {
     
+    /// The level of the header (1 - 6)
     public var level: Int
     
+    /// The textual content of the header.
     public var content: ParagraphElement
     
     // MARK: - Initialization
@@ -59,12 +71,15 @@ public class HeaderElement: BlockElement {
     
     // MARK: - Formatting
 
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         var string = String(repeating: "#", count: self.level) + " "
         string += content.formatAsMarkin()
         return string
     }
     
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "HEADER(level: \(self.level),\n"
@@ -73,6 +88,7 @@ public class HeaderElement: BlockElement {
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let contentHTML = content.formatAsHTML(document, tag: nil)
@@ -81,6 +97,8 @@ public class HeaderElement: BlockElement {
         return string
     }
     
+    /// Format a string that is suitable for use as an HTML anchor or other
+    /// string that identifies this particular header.
     public func formatAsAnchorID() -> String {
         let contentHTML = content.formatAsHTML(nil, tag: nil)
         let noTagsString = contentHTML.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)

@@ -24,6 +24,12 @@
 
 import Foundation
 
+
+/// A horizontal divider line is written as three dashes on a separate line:
+///
+/// ```
+/// ---
+/// ```
 public class HorizontalRuleElement: BlockElement {
     
     // MARK: - Initialization
@@ -46,16 +52,20 @@ public class HorizontalRuleElement: BlockElement {
     
     // MARK: - Formatting
 
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         return "---\n"
     }
 
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string = indent + "HORIZONTAL_RULE()"
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string = indent + "<hr>\n"

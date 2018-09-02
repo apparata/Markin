@@ -24,6 +24,8 @@
 
 import Foundation
 
+/// The BlockElement is to be used as a base object for elements such as
+/// header, code block, and block quote, that should be rendered as blocks.
 public class BlockElement: MarkinElement {
     
     // MARK: - Initialization

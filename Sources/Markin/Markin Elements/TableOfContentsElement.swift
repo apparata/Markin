@@ -24,6 +24,16 @@
 
 import Foundation
 
+/// A placeholder for where the table of contents should be rendered is written
+/// like this on its own separate line:
+///
+/// ```
+/// %TOC
+/// ```
+///
+/// The table of contents must be generated when rendering the table of
+/// contents, as this element merely points out _where_ the table of contents
+/// should be rendered.
 public class TableOfContentsElement: BlockElement {
     
     // MARK: - Initialization
@@ -42,16 +52,20 @@ public class TableOfContentsElement: BlockElement {
     
     // MARK: - Formatting
     
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         return "%TOC\n"
     }
     
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string = indent + "TOC()\n"
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let headers = document?.blocks.compactMap { $0 as? HeaderElement} ?? []
@@ -62,14 +76,6 @@ public class TableOfContentsElement: BlockElement {
         let string = indent + "\(html)"
         return string
     }
-    
-    // # Swift Package Manager CheatSheet
-    // ## Banana
-    // ### Blockquote
-    // ## Unordered List
-    // ## Ordered List
-    // # Executable Package
-    // ### Library
     
     private func makeHeaderListHTML(_ headers: [HeaderElement], level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)

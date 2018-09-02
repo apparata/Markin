@@ -24,8 +24,14 @@
 
 import Foundation
 
+/// The `DocumentElement` is the root element of the element tree and is the
+/// result of parsing a Markin string.
+///
+/// It exposes an array of the block elements of the tree for traversal.
+///
 public class DocumentElement: MarkinElement {
     
+    /// The block elements of the tree.
     public var blocks: [BlockElement]
     
     // MARK: - Initialization
@@ -76,6 +82,7 @@ public class DocumentElement: MarkinElement {
     
     // MARK: - Formatting
     
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         var string = ""
         for block in blocks {
@@ -85,6 +92,8 @@ public class DocumentElement: MarkinElement {
         return string
     }
     
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "BLOCKS(\n"
@@ -95,10 +104,12 @@ public class DocumentElement: MarkinElement {
         return string
     }
     
+    /// Render the element and its children as HTML.
     public func formatAsHTML(level: Int = 0) -> String {
         return formatAsHTML(self, level: level)
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = ""

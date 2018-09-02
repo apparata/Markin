@@ -24,6 +24,11 @@
 
 import Foundation
 
+/// Bold text is achieved by using the marker \* as follows:
+///
+/// ```
+/// The word *bold* is bold in this sentence.
+/// ```
 public class BoldElement: InlineElement {
     
     public var content: InlineElement
@@ -53,11 +58,14 @@ public class BoldElement: InlineElement {
     
     // MARK: - Formatting
 
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         let string = "*\(content.formatAsMarkin())*"
         return string
     }
 
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "BOLD(\n"
@@ -66,12 +74,14 @@ public class BoldElement: InlineElement {
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string = indent + "<strong>\(content.formatAsHTML(document))</strong>"
         return string
     }
     
+    /// Render the element and its children as flat text.
     public override func formatAsText() -> String {
         return content.formatAsText()
     }

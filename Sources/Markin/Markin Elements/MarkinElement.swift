@@ -24,6 +24,7 @@
 
 import Foundation
 
+/// Base element for all elements in the element tree.
 public class MarkinElement: Codable {
     
     internal let elementType: String
@@ -50,14 +51,18 @@ public class MarkinElement: Codable {
     
     // MARK: - Formatting
     
+    /// Transform the element and its children to a Markin formatted string.
     public func formatAsMarkin(level: Int = 0) -> String {
         return ""
     }
     
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public func formatDebugString(level: Int = 0) -> String {
         return ""
     }
 
+    /// Render the element and its children as HTML.
     public func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         return ""
     }

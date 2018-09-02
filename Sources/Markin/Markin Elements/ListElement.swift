@@ -27,6 +27,25 @@ import Foundation
 public protocol ListEntryCompliant {}
 public typealias ListEntryElement = BlockElement & ListEntryCompliant
 
+/// Unordered list:
+///
+/// ```
+/// - First list entry
+/// - Second list entry
+/// - First nested list entry
+/// - Second nested list entry
+/// - Third list entry
+/// ```
+///
+/// Ordered lists:
+///
+/// ```
+/// 1. First list entry
+/// 1. Second list entry
+/// 1. First nested list entry
+/// 1. Second nested list entry
+/// 1. Third list entry
+/// ```
 public class ListElement: BlockElement, ListEntryCompliant {
     
     public var isOrdered: Bool
@@ -80,6 +99,7 @@ public class ListElement: BlockElement, ListEntryCompliant {
     
     // MARK: - Formatting
 
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         var listEntries: [String] = []
         for entry in entries {
@@ -112,6 +132,8 @@ public class ListElement: BlockElement, ListEntryCompliant {
         return string
     }
     
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "LIST(ordered: \(isOrdered), \n"
@@ -122,6 +144,7 @@ public class ListElement: BlockElement, ListEntryCompliant {
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let entryIndent = indent + "  "

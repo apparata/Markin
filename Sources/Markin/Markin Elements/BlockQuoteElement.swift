@@ -24,6 +24,15 @@
 
 import Foundation
 
+/// A block quote is formatted as text paragraphs, but each line is prefixed with a > in the following manner:
+///
+/// ```
+/// > This is the first line of the block quote.
+/// > This is the second line of the block quote.
+/// >
+/// > This is the first line of the second paragraph
+/// > of the block quote.
+/// ```
 public class BlockQuoteElement: BlockElement {
     
     public var content: [ParagraphElement]
@@ -53,6 +62,7 @@ public class BlockQuoteElement: BlockElement {
     
     // MARK: - Formatting
     
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         var paragraphs: [String] = []
         for paragraph in content {
@@ -76,6 +86,8 @@ public class BlockQuoteElement: BlockElement {
         return string
     }
     
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "BLOCKQUOTE(\n"
@@ -86,6 +98,7 @@ public class BlockQuoteElement: BlockElement {
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "<blockquote>\n"

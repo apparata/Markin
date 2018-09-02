@@ -24,6 +24,11 @@
 
 import Foundation
 
+/// Italic text is achieved by using the marker \_ as follows:
+///
+/// ```
+/// The word *italic* is in italics in this sentence.
+/// ```
 public class ItalicElement: InlineElement {
     
     public var content: InlineElement
@@ -53,11 +58,14 @@ public class ItalicElement: InlineElement {
     
     // MARK: - Formatting
 
+    /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
         let string = "_\(content.formatAsMarkin())_"
         return string
     }
 
+    /// Render the element and its children as a debug string. Useful when
+    /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         var string = indent + "ITALIC(\n"
@@ -66,12 +74,14 @@ public class ItalicElement: InlineElement {
         return string
     }
     
+    /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string = indent + "<em>\(content.formatAsHTML(document))</em>"
         return string
     }
     
+    /// Render the element and its children as flat text.
     public override func formatAsText() -> String {
         return content.formatAsText()
     }
