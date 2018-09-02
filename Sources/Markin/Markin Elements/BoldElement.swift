@@ -65,4 +65,10 @@ public class BoldElement: InlineElement {
         string += indent + ")\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let string = indent + "<strong>\(content.formatAsHTML(document))</strong>"
+        return string
+    }
 }

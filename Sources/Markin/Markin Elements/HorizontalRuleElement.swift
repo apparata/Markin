@@ -55,4 +55,10 @@ public class HorizontalRuleElement: BlockElement {
         let string = indent + "HORIZONTAL_RULE()"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let string = indent + "<hr>\n"
+        return string
+    }
 }

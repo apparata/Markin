@@ -62,4 +62,10 @@ public class TextElement: InlineElement {
         let string = indent + "TEXT(\(content))\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let string = indent + content.htmlEntityEncoded()
+        return string
+    }
 }

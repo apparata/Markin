@@ -100,4 +100,29 @@ public class ParagraphElement: BlockElement, ListEntryCompliant {
         string += indent + ")\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        return formatAsHTML(document, level: level, tag: "p")
+    }
+    
+    func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0, tag: String?) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let tagIndent = indent + (tag == nil ? "" : "  ")
+        var string = indent
+        if let tag = tag {
+            string += "<\(tag)>\n" + tagIndent
+        }
+        var previousElement: InlineElement?
+        for element in content {
+            if previousElement is TextElement && element is TextElement {
+                string += "\n" + tagIndent
+            }
+            string += element.formatAsHTML(document)
+            previousElement = element
+        }
+        if let tag = tag {
+            string += "\n\(indent)</\(tag)>\n"
+        }
+        return string
+    }
 }

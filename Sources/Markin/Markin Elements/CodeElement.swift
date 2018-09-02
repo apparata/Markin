@@ -54,12 +54,18 @@ public class CodeElement: InlineElement {
     // MARK: - Formatting
 
     public override func formatAsMarkin(level: Int = 0) -> String {
-        return content
+        return "`" + content + "`"
     }
 
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
         let string = indent + "CODE(\(content))\n"
+        return string
+    }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let string = indent + "<code>\(content.htmlEntityEncoded())</code>"
         return string
     }
 }

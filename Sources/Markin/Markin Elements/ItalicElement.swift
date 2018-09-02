@@ -65,4 +65,10 @@ public class ItalicElement: InlineElement {
         string += indent + ")\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let string = indent + "<em>\(content.formatAsHTML(document))</em>"
+        return string
+    }
 }

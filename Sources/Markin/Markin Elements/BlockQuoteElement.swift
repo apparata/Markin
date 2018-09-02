@@ -85,4 +85,14 @@ public class BlockQuoteElement: BlockElement {
         string += indent + ")\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        var string = indent + "<blockquote>\n"
+        for paragraph in content {
+            string += paragraph.formatAsHTML(document, level: level + 1)
+        }
+        string += indent + "</blockquote>\n"
+        return string
+    }
 }

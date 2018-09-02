@@ -29,7 +29,7 @@ public class HeaderElement: BlockElement {
     public var level: Int
     
     public var content: ParagraphElement
-
+    
     // MARK: - Initialization
 
     public init(level: Int, content: ParagraphElement) {
@@ -72,5 +72,29 @@ public class HeaderElement: BlockElement {
         string += indent + ")\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let contentHTML = content.formatAsHTML(document, tag: nil)
+        let anchor = "<a id=\"\(formatAsAnchorID())\"> </a>"
+        let string = indent + "<h\(self.level)>\(anchor)\(contentHTML)</h\(self.level)>\n"
+        return string
+    }
+    
+    public func formatAsAnchorID() -> String {
+        let contentHTML = content.formatAsHTML(nil, tag: nil)
+        let noTagsString = contentHTML.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+        
+        let chars: [Character] = noTagsString.lowercased().map { char in
+            if "abcdefghijklmnopqrstuvwxyz0123456789".contains(char) {
+                return char
+            } else {
+                return Character("-")
+            }
+        }
+        let id = String(chars)
+        return id
+    }
+    
 }
 

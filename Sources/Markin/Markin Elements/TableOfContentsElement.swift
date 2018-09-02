@@ -51,4 +51,63 @@ public class TableOfContentsElement: BlockElement {
         let string = indent + "TOC()\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let headers = document?.blocks.compactMap { $0 as? HeaderElement} ?? []
+        guard !headers.isEmpty else {
+            return ""
+        }
+        let html = makeHeaderListHTML(headers, level: level)
+        let string = indent + "\(html)"
+        return string
+    }
+    
+    // # Swift Package Manager CheatSheet
+    // ## Banana
+    // ### Blockquote
+    // ## Unordered List
+    // ## Ordered List
+    // # Executable Package
+    // ### Library
+    
+    private func makeHeaderListHTML(_ headers: [HeaderElement], level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        var listIndent = indent
+        var entryIndent = indent + "  "
+        var string = indent + "<ul class=\"tableOfContents\">\n"
+        var listLevel = 1
+        var currentHeaderLevel = 1
+        for header in headers {
+            
+            if header.level > currentHeaderLevel {
+                listLevel += 1
+                listIndent = indent + String(repeating: "  ", count: (listLevel - 1) * 2)
+                string += entryIndent + "<li>\n\(listIndent)<ul>\n"
+                entryIndent = listIndent + "  "
+            } else if header.level < currentHeaderLevel {
+                listLevel -= 1
+                string += "\(listIndent)</ul>\n"
+                listIndent = indent + String(repeating: "  ", count: (listLevel - 1) * 2)
+                entryIndent = listIndent + "  "
+                string += "\(entryIndent)</li>\n"
+            }
+            currentHeaderLevel = header.level
+            
+            let headerText = header.content.formatAsHTML(nil, tag: nil)
+            let anchorID = header.formatAsAnchorID()
+            string += entryIndent + "<li><a href=\"#\(anchorID)\">\(headerText)</a></li>\n"
+        }
+        
+        while listLevel > 1 {
+            string += "\(listIndent)</ul>\n"
+            listIndent = indent + String(repeating: "  ", count: (listLevel - 1) * 2)
+            entryIndent = indent + String(repeating: "  ", count: (listLevel - 1) * 2 - 1)
+            string += "\(entryIndent)</li>\n"
+            listLevel -= 1
+        }
+        
+        string += indent + "</ul>\n"
+        return string
+    }
 }

@@ -26,7 +26,7 @@ import Foundation
 
 public class MarkinParser {
     
-    private let debugMode = true
+    private let debugMode = false
     
     private class Context {
 
@@ -59,12 +59,11 @@ public class MarkinParser {
                 // Do nothing, basically.
                 if debugMode { print("[parseBlocks] Skipping empty line") }
             } else if let block = try parseBlock(scanner, context) {
-                print(block)
                 blocks.append(block)
             } else if scanner.isAtEnd {
                 break
             } else {
-                print(scanner.peekNext(20))
+                if debugMode { print(scanner.peekNext(20)) }
                 throw MarkinError.failedToParseMarkin
             }
         }
@@ -142,9 +141,11 @@ public class MarkinParser {
     private func parseCodeBlock(_ scanner: Scanner, _ context: Context) -> CodeBlockElement? {
         if debugMode { print("[parseCodeBlock] Enter: " + scanner.peekNext(20) + "...") }
         
-        guard scanner.scan("```"), let language = scanner.scanUpToNewLine() else {
+        guard scanner.scan("```") else {
             return nil
         }
+        
+        let language = scanner.scanUpToNewLine()
 
         guard scanner.scanNewLine() else {
             return nil
@@ -157,9 +158,10 @@ public class MarkinParser {
         _ = scanner.skipThroughNewLine()
 
         var codeLanguage: String? = nil
-        let trimmedLanguage = language.trimmingCharacters(in: .whitespaces)
-        if !trimmedLanguage.isEmpty {
-            codeLanguage = trimmedLanguage
+        if let trimmedLanguage = language?.trimmingCharacters(in: .whitespaces) {
+            if !trimmedLanguage.isEmpty {
+                codeLanguage = trimmedLanguage
+            }
         }
         
         return CodeBlockElement(language: codeLanguage, content: code)

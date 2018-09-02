@@ -24,42 +24,25 @@
 
 import Foundation
 
-public class MarkinElement: Codable {
-    
-    internal let elementType: String
-    
-    // MARK: - Initialization
+extension String {
 
-    public init() {
-        elementType = String(describing: type(of: self))
+    func htmlEntityEncoded() -> String {
+        
+        let entities: [Character: String] = [
+            "<": "&lt;",
+            ">": "&gt;"
+        ]
+        
+        var string = ""
+        for character in self {
+            if let entity = entities[character] {
+                string.append(entity)
+            } else {
+                string.append(character)
+            }
+        }
+        
+        return string
     }
     
-    private enum ElementCodingKeys: String, CodingKey {
-        case elementType
-    }
-    
-    public required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: ElementCodingKeys.self)
-        elementType = try container.decode(String.self, forKey: .elementType)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: ElementCodingKeys.self)
-        try container.encode(elementType, forKey: .elementType)
-    }
-    
-    // MARK: - Formatting
-    
-    public func formatAsMarkin(level: Int = 0) -> String {
-        return ""
-    }
-    
-    public func formatDebugString(level: Int = 0) -> String {
-        return ""
-    }
-
-    public func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
-        return ""
-    }
 }
-

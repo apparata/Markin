@@ -121,4 +121,22 @@ public class ListElement: BlockElement, ListEntryCompliant {
         string += indent + ")\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let entryIndent = indent + "  "
+        var string = indent + (isOrdered ? "<ol>" : "<ul>") + "\n"
+        for entry in entries {
+            if let paragraphEntry = entry as? ParagraphElement {
+                let paragraph = paragraphEntry.formatAsHTML(document, tag: nil)
+                string += entryIndent + "<li>\(paragraph)</li>\n"
+            } else if let listEntry = entry as? ListElement {
+                let list = listEntry.formatAsHTML(document, level: level + 2)
+                string += entryIndent + "<li>\n\(list)\(entryIndent)</li>\n"
+            }
+        }
+        
+        string += indent + (isOrdered ? "</ol>" : "</ul>") + "\n"
+        return string
+    }
 }

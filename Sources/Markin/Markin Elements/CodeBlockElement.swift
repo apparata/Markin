@@ -73,4 +73,16 @@ public class CodeBlockElement: BlockElement {
         string += indent + ")\n"
         return string
     }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        let string: String
+        let code = content.htmlEntityEncoded()
+        if let language = language {
+            string = indent + "<pre><code class=\"\(language)\">\(code)</code></pre>\n"
+        } else {
+            string = indent + "<pre><code>\(code)</code></pre>\n"
+        }
+        return string
+    }
 }

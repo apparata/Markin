@@ -93,5 +93,20 @@ public class DocumentElement: MarkinElement {
         string += indent + ")\n"
         return string
     }
+    
+    public func formatAsHTML(level: Int = 0) -> String {
+        return formatAsHTML(self, level: level)
+    }
+    
+    public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
+        let indent = String(repeating: "  ", count: level)
+        var string = ""
+        for block in blocks {
+            string += indent + block.formatAsHTML(document)
+            //string += "\n"
+        }
+        string += "\n"
+        return string
+    }
 }
 
