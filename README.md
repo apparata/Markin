@@ -35,14 +35,6 @@ A place holder for where the table of contents should be rendered is written lik
 %TOC
 ```
 
-### Code Blocks
-
-Code can be written in code blocks. The language can be specified after the opening ``` sequence.
-
-<pre><code>```Swift
-let a = 7
-```</code></pre>
-
 ### Text Paragraphs
 
 A text paragraph consists of consecutive lines of text, terminated by a blank line.
@@ -51,6 +43,26 @@ A text paragraph consists of consecutive lines of text, terminated by a blank li
 This is the first sentence of the paragraph. This is the second sentence.
 This is the third sentence, also in the paragraph.
 ```
+
+### Block Quotes
+
+A block quote is formatted as text paragraphs, but each line is prefixed with a > in the following manner:
+
+```
+> This is the first line of the block quote.
+> This is the second line of the block quote.
+>
+> This is the first line of the second paragraph
+> of the block quote.
+```
+
+### Code Blocks
+
+Code can be written in code blocks. The language can be specified after the opening ``` sequence.
+
+<pre><code>```Swift
+let a = 7
+```</code></pre>
 
 ### Bold Text
 

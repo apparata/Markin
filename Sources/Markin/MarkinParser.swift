@@ -26,7 +26,7 @@ import Foundation
 
 public class MarkinParser {
     
-    private let debugMode = false
+    private let debugMode = true
     
     private class Context {
 
@@ -87,7 +87,7 @@ public class MarkinParser {
             return list
         } else if let horizontalRule = parseHorizontalRule(scanner, context) {
             return horizontalRule
-        } else if let paragraph = try parseParagraph(scanner, context) {
+        } else if let paragraph = parseParagraph(scanner, context) {
             return paragraph
         }
         
@@ -111,6 +111,8 @@ public class MarkinParser {
     private func parseHeader(_ scanner: Scanner, _ context: Context) throws -> HeaderElement? {
         if debugMode { print("[parseHeader] Enter: " + scanner.peekNext(20) + "...") }
         
+        let position = scanner.scanLocation
+        
         let level: Int
         
         if scanner.scan("# ") {
@@ -129,8 +131,11 @@ public class MarkinParser {
             return nil
         }
         
-        let paragraph: ParagraphElement = try parseParagraph(scanner, context) ?? ParagraphElement()
-        
+        guard let paragraph = parseParagraph(scanner, context) else {
+            scanner.scanLocation = position
+            return nil
+        }
+
         return HeaderElement(level: level, content: paragraph)
     }
     
@@ -159,12 +164,36 @@ public class MarkinParser {
         
         return CodeBlockElement(language: codeLanguage, content: code)
     }
-
+    
     private func parseBlockQuote(_ scanner: Scanner, _ context: Context) -> BlockQuoteElement? {
-        if debugMode { print("[parseBlockQuote] Enter") }
-        return nil
+        if debugMode { print("[parseBlockQuote] Enter: " + scanner.peekNext(20) + "...") }
+        
+        var content: [ParagraphElement] = []
+        
+        let position = scanner.scanLocation
+        
+        guard scanner.scan(">") else {
+            return nil
+        }
+        
+        _ = scanner.scanWhiteSpace()
+        
+        while true {
+            guard let paragraph = parseParagraph(scanner, context, linePrefix: ">") else {
+                break
+            }
+            content.append(paragraph)
+        }
+        
+        if content.isEmpty {
+            scanner.scanLocation = position
+            return nil
+        } else {
+            return BlockQuoteElement(content)
+        }
     }
 
+    
     private func parseList(_ scanner: Scanner, _ context: Context) -> ListElement? {
         if debugMode { print("[parseList] Enter") }
         return nil
@@ -182,82 +211,106 @@ public class MarkinParser {
         return nil
     }
 
-    private func parseParagraph(_ scanner: Scanner, _ context: Context) throws -> ParagraphElement? {
+    private func parseParagraph(_ scanner: Scanner, _ context: Context, linePrefix: String? = nil) -> ParagraphElement? {
         if debugMode { print("[parseParagraph] Enter: " + scanner.peekNext(20) + "...") }
+        
+        let position = scanner.scanLocation
         
         var content: [InlineElement] = []
         
         while true {
-            if let bold = try parseBold(scanner, context) {
+            if let bold = parseBold(scanner, context) {
                 content.append(bold)
-            } else if let italic = try parseItalic(scanner, context) {
+            } else if let italic = parseItalic(scanner, context) {
                 content.append(italic)
-            } else if let code = try parseCode(scanner, context) {
+            } else if let code = parseCode(scanner, context) {
                 content.append(code)
-            } else if let text = try parseText(scanner, context) {
+            } else if let text = parseText(scanner, context) {
                 content.append(text)
             } else if scanner.scanNewLine() {
+                if let linePrefix = linePrefix {
+                    if scanner.scan(linePrefix) {
+                        // Scan to first non-whitespace character on line.
+                        _ = scanner.scanWhiteSpace()
+                    } else {
+                        guard scanner.peekEmptyLine() else {
+                            scanner.scanLocation = position
+                            return nil
+                        }
+                    }
+                }
                 if scanner.peekEmptyLine() {
                     break
                 }
             } else if scanner.isAtEnd {
                 break
             } else {
-                throw MarkinError.failedToParseParagraph
+                scanner.scanLocation = position
+                return nil
             }
         }
         
         if content.isEmpty {
+            scanner.scanLocation = position
             return nil
         } else {
             return ParagraphElement(content)
         }
     }
     
-    private func parseBold(_ scanner: Scanner, _ context: Context) throws -> BoldElement? {
+    private func parseBold(_ scanner: Scanner, _ context: Context) -> BoldElement? {
         if debugMode { print("[parseBold] Enter: " + scanner.peekNext(20) + "...") }
+        
+        let position = scanner.scanLocation
         
         guard scanner.scan("*") else {
             return nil
         }
         
-        let text = try parseText(scanner, context)
+        let text = parseText(scanner, context)
         
         guard scanner.scan("*") else {
-            throw MarkinError.nonTerminatedInline("*")
+            scanner.scanLocation = position
+            return nil
         }
         
         guard let boldText = text else {
+            scanner.scanLocation = position
             return nil
         }
         
         return BoldElement(boldText)
     }
 
-    private func parseItalic(_ scanner: Scanner, _ context: Context) throws -> ItalicElement? {
+    private func parseItalic(_ scanner: Scanner, _ context: Context) -> ItalicElement? {
         if debugMode { print("[parseItalic] Enter: " + scanner.peekNext(20) + "...") }
+        
+        let position = scanner.scanLocation
         
         guard scanner.scan("_") else {
             return nil
         }
         
-        let text = try parseText(scanner, context)
+        let text = parseText(scanner, context)
         
         guard scanner.scan("_") else {
-            throw MarkinError.nonTerminatedInline("_")
+            scanner.scanLocation = position
+            return nil
         }
         
         guard let italicText = text else {
+            scanner.scanLocation = position
             return nil
         }
         
         return ItalicElement(italicText)
     }
 
-    private func parseCode(_ scanner: Scanner, _ context: Context) throws -> CodeElement? {
-        
+    private func parseCode(_ scanner: Scanner, _ context: Context) -> CodeElement? {
         if debugMode { print("[parseCode] Enter: " + scanner.peekNext(20) + "...") }
         
+        let position = scanner.scanLocation
+
         guard scanner.scan("`") else {
             return nil
         }
@@ -265,21 +318,26 @@ public class MarkinParser {
         let text = scanner.scanUpToCharacter(in: "`\n")
         
         guard scanner.scan("`") else {
-            throw MarkinError.nonTerminatedInline("`")
+            scanner.scanLocation = position
+            return nil
         }
         
         guard let code = text else {
+            scanner.scanLocation = position
             return nil
         }
         
         return CodeElement(code)
     }
     
-    private func parseText(_ scanner: Scanner, _ context: Context) throws -> TextElement? {
+    private func parseText(_ scanner: Scanner, _ context: Context) -> TextElement? {
         
         if debugMode {  print("[parseText] (\(scanner.scanLocation)) Enter: " + scanner.peekNext(20) + "...") }
         
-        guard let text = try scanner.scanText() else {
+        let position = scanner.scanLocation
+        
+        guard let text = scanner.scanText() else {
+            scanner.scanLocation = position
             return nil
         }
         return TextElement(text)

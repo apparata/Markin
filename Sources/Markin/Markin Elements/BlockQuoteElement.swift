@@ -52,23 +52,37 @@ public class BlockQuoteElement: BlockElement {
     }
     
     // MARK: - Formatting
-
+    
     public override func formatAsMarkin() -> String {
-        var string = ""
+        var paragraphs: [String] = []
         for paragraph in content {
-            string += "> " + paragraph.formatAsMarkin(lineSeparator: "\n> ")
-            string += "\n"
+            paragraphs.append(formatParagraphAsMarkin(paragraph))
+        }
+        var string = paragraphs.joined(separator: "\n> \n")
+        string += "\n"
+        return string
+    }
+    
+    private func formatParagraphAsMarkin(_ paragraph: ParagraphElement) -> String {
+        var string = "> "
+        var previousElement: InlineElement?
+        for element in paragraph.content {
+            if previousElement is TextElement && element is TextElement {
+                string += "\n> "
+            }
+            string += element.formatAsMarkin()
+            previousElement = element
         }
         return string
     }
     
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
-        var string = indent + "BLOCKQUOTE("
+        var string = indent + "BLOCKQUOTE(\n"
         for paragraph in content {
             string += paragraph.formatDebugString(level: level + 1)
         }
-        string += ")"
+        string += indent + ")\n"
         return string
     }
 }

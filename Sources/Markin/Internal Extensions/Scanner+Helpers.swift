@@ -129,10 +129,10 @@ extension Scanner {
         return true
     }
     
-    func scanText() throws -> String? {
+    func scanText() -> String? {
         var strings: [String] = []
         while true {
-            if let escapedCharacter = try scanEscapedCharacter() {
+            if let escapedCharacter = scanEscapedCharacter() {
                 strings.append(escapedCharacter)
             } else if let string = scanUpToCharacter(in: "\\`*_\n"), !string.isEmpty {
                 strings.append(string)
@@ -147,7 +147,8 @@ extension Scanner {
         }
     }
     
-    func scanEscapedCharacter() throws -> String? {
+    func scanEscapedCharacter() -> String? {
+        let position = scanLocation
         if scan("\\") {
             if scan("\\") {
                 return "\\"
@@ -180,7 +181,8 @@ extension Scanner {
             } else if scan("!") {
                 return "!"
             } else {
-                throw MarkinError.invalidEscapedCharacter
+                scanLocation = position
+                return nil
             }
         }
         return nil
