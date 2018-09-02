@@ -18,6 +18,14 @@ Markin is available under the MIT License. See the LICENSE file in the repositor
 
 ## Usage
 
+### Adding Markin as a Dependency
+
+Add the Markin package as a dependency in the `Package.swift` file of your Swift Package Manager package. The example below specifies a dependency to the latest version of the Markin package on the master branch. You probably want to use a version tag from a release instead.
+
+```
+.package(url: "https://github.com/apparata/Markin.git", .branch("master"))
+```
+
 ### Parsing
 
 Simply instantiate a parser and call the `parse()` method with a string in Markin format as a parameter. The `parse()` method returns a `DocumentElement` object, which is the root object of the element tree.
