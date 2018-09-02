@@ -10,9 +10,36 @@ The parser generates a tree of elements. The tree is `Codable` compliant.
 
 The tree can also be transformed back to Markin format. This means that Markin documents can parsed, manipulated programmatically by modifying/removing/replacing/adding tree elements, and written back to file.
 
+The library has HTML rendering built-in, but external rendering of the element tree is entirely feasible. 
+
 ## License
 
 Markin is available under the MIT License. See the LICENSE file in the repository for details.
+
+## Usage
+
+### Parsing
+
+Simply instantiate a parser and call the `parse()` method with a string in Markin format as a parameter:
+
+```
+
+let exampleMarkin = """
+# This is a Header
+
+This is a paragraph.
+"""
+
+do {
+    let parser = MarkinParser()
+    let document = try parser.parse(exampleMarkin)
+} catch {
+    print(error)
+}
+
+```
+
+### Rendering HTML
 
 ## The Markin Format
 
