@@ -40,6 +40,9 @@ public class MarkinParser {
         }
     }
     
+    public init() {
+    }
+    
     public func parse(_ markin: String) throws -> DocumentElement {
         
         let context = Context(markin: markin + "\n")
