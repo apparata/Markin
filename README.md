@@ -20,7 +20,7 @@ Markin is available under the MIT License. See the LICENSE file in the repositor
 
 ### Parsing
 
-Simply instantiate a parser and call the `parse()` method with a string in Markin format as a parameter:
+Simply instantiate a parser and call the `parse()` method with a string in Markin format as a parameter. The `parse()` method returns a `DocumentElement` object, which is the root object of the element tree.
 
 ```Swift
 let exampleMarkin = """
@@ -37,18 +37,31 @@ do {
 }
 ```
 
-### Back to Markin from Parsed Tree
+### Rendering HTML from Element Tree
+
+```Swift
+let document = try parser.parse(exampleMarkin)
+let html = document.formatAsHTML()
+```
+
+### Back to Markin from Element Tree
 
 ```Swift
 let document = try parser.parse(exampleMarkin)
 let markin = document.formatAsMarkin()
 ```
 
-### Rendering HTML
+### Element Tree to JSON
 
 ```Swift
 let document = try parser.parse(exampleMarkin)
-let html = document.formatAsHTML()
+let jsonData = try JSONEncoder().encode(document)
+```
+
+### JSON to Element Tree
+
+```Swift
+let document = try JSONDecoder().decode(DocumentElement.self, from: jsonData)
 ```
 
 ## The Markin Format
