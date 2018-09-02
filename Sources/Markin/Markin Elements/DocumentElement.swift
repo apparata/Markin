@@ -53,6 +53,7 @@ public class DocumentElement: MarkinElement {
             let block = try blocksArrayForType.nestedContainer(keyedBy: BlockTypeKey.self)
             let type = try block.decode(String.self, forKey: .elementType)
             switch type {
+            case "TableOfContentsElement": blocks.append(try blocksArray.decode(TableOfContentsElement.self))
             case "CodeBlockElement": blocks.append(try blocksArray.decode(CodeBlockElement.self))
             case "HeaderElement": blocks.append(try blocksArray.decode(HeaderElement.self))
             case "BlockQuoteElement": blocks.append(try blocksArray.decode(BlockQuoteElement.self))

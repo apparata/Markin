@@ -68,17 +68,19 @@ This is the last paragraph.
         let parser = MarkinParser()
         
         do {
-            let result = try parser.parse(exampleMarkin)
-            print(result.formatDebugString())
-            print(result.formatAsMarkin())
-            print(result.formatAsHTML())
+            let document = try parser.parse(exampleMarkin)
+            print(document.formatDebugString())
+            print(document.formatAsMarkin())
+            print(document.formatAsHTML())
+            let jsonData = try JSONEncoder().encode(document)
+            print(String(data: jsonData, encoding: .utf8)!)
+            let decodedDocument = try JSONDecoder().decode(DocumentElement.self, from: jsonData)
+            print(decodedDocument.formatDebugString())
         } catch {
             print(error)
             XCTFail(error.localizedDescription)
         }
-
     }
-
 
     static var allTests = [
         ("testExample", testExample),
