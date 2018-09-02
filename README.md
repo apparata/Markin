@@ -1,6 +1,6 @@
 # Markin
 
- [![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/) ![license](https://img.shields.io/badge/license-MIT-blue.svg) ![language Swift 4](https://img.shields.io/badge/language-Swift%204-orange.svg) ![platform macOS](https://img.shields.io/badge/platform-macOS-lightgrey.svg) ![platform iOS](https://img.shields.io/badge/platform-iOS-lightgrey.svg) ![platform tvOS](https://img.shields.io/badge/platform-tvOS-lightgrey.svg)
+![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/) ![license](https://img.shields.io/badge/license-MIT-blue.svg) ![language Swift 4](https://img.shields.io/badge/language-Swift%204-orange.svg) ![platform iOS macOS tvOS](https://img.shields.io/badge/platform-iOS%20%7C%20tvOS%20%7C%20macOS-lightgrey.svg)
 
 Markin is a Swift library for parsing a Markdown-like text format.
 
