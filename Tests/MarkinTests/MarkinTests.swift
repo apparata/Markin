@@ -62,7 +62,9 @@ HTML test:
 <b>This is bold HTML</b>
 ```
 
+This is the last paragraph.
 """
+        
         let parser = MarkinParser()
         
         do {

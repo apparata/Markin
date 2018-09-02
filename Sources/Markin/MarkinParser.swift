@@ -42,7 +42,7 @@ public class MarkinParser {
     
     public func parse(_ markin: String) throws -> DocumentElement {
         
-        let context = Context(markin: markin)
+        let context = Context(markin: markin + "\n")
         
         let blocks = try parseBlocks(context.scanner, context)
         
