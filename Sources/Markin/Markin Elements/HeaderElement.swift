@@ -59,8 +59,8 @@ public class HeaderElement: BlockElement {
     
     // MARK: - Formatting
 
-    public override func formatAsMarkin() -> String {
-        var string = String(repeating: "#", count: level) + " "
+    public override func formatAsMarkin(level: Int = 0) -> String {
+        var string = String(repeating: "#", count: self.level) + " "
         string += content.formatAsMarkin()
         return string
     }

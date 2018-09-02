@@ -53,7 +53,7 @@ public class BoldElement: InlineElement {
     
     // MARK: - Formatting
 
-    public override func formatAsMarkin() -> String {
+    public override func formatAsMarkin(level: Int = 0) -> String {
         let string = "*\(content.formatAsMarkin())*"
         return string
     }

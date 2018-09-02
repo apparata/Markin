@@ -50,7 +50,7 @@ public class MarkinElement: Codable {
     
     // MARK: - Formatting
 
-    public func formatAsMarkin() -> String {
+    public func formatAsMarkin(level: Int = 0) -> String {
         return ""
     }
     

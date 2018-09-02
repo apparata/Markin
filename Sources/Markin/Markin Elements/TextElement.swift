@@ -53,7 +53,7 @@ public class TextElement: InlineElement {
     
     // MARK: - Formatting
 
-    public override func formatAsMarkin() -> String {
+    public override func formatAsMarkin(level: Int = 0) -> String {
         return content
     }
 

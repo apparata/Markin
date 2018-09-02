@@ -194,9 +194,116 @@ public class MarkinParser {
     }
 
     
-    private func parseList(_ scanner: Scanner, _ context: Context) -> ListElement? {
-        if debugMode { print("[parseList] Enter") }
-        return nil
+    private func parseList(_ scanner: Scanner, _ context: Context, listLevel: Int? = nil) -> ListElement? {
+        if debugMode { print("[parseList] Enter: " + scanner.peekNext(20) + "...") }
+
+        var isOrdered = false
+        
+        var entries: [ListEntryElement] = []
+        
+        let position = scanner.scanLocation
+        
+        var currentLevel: Int? = listLevel
+
+        while true {
+            
+            let positionBeforeLevelCheck = scanner.scanLocation
+            
+            var level: Int = 0
+            if let whiteSpace = scanner.scanWhiteSpace() {
+                let onlySpaces = whiteSpace.replacingOccurrences(of: "\t", with: "  ")
+                level = onlySpaces.count / 2
+            }
+
+            if scanner.scan("- ") {
+                isOrdered = false
+            } else if scanner.scan("1. ") {
+                isOrdered = true
+            } else {
+                scanner.scanLocation = position
+                return nil
+            }
+            
+            scanner.scanLocation = positionBeforeLevelCheck
+            
+            if let currentLevel = currentLevel, level < currentLevel {
+                // This list nesting level ended.
+                break
+            } else if let currentLevel = currentLevel, level > currentLevel {
+                guard let entry = parseList(scanner, context, listLevel: level) else {
+                    scanner.scanLocation = position
+                    return nil
+                }
+                entries.append(entry)
+                // Restore level
+                level = currentLevel
+                if scanner.peekEmptyLine() || scanner.isAtEnd {
+                    break
+                }
+            } else {
+                guard let entry = parseListEntry(scanner, context) else {
+                    scanner.scanLocation = position
+                    return nil
+                }
+
+                entries.append(entry)
+                
+                if scanner.peekEmptyLine() || scanner.isAtEnd {
+                    break
+                }
+            }
+            
+            currentLevel = level
+        }
+        
+        if entries.isEmpty {
+            scanner.scanLocation = position
+            return nil
+        } else {
+            return ListElement(isOrdered: isOrdered, entries: entries)
+        }
+    }
+    
+    private func parseListEntry(_ scanner: Scanner, _ context: Context) -> ListEntryElement? {
+        if debugMode { print("[parseListEntry] Enter: " + scanner.peekNext(20) + "...") }
+
+        var content: [InlineElement] = []
+        
+        let positionBeforeLevelCheck = scanner.scanLocation
+        _ = scanner.scanWhiteSpace()
+        guard scanner.scan("- ") || scanner.scan("1. ") else {
+            scanner.scanLocation = positionBeforeLevelCheck
+            return nil
+        }
+        
+        while true {
+            if let bold = parseBold(scanner, context) {
+                content.append(bold)
+            } else if let italic = parseItalic(scanner, context) {
+                content.append(italic)
+            } else if let code = parseCode(scanner, context) {
+                content.append(code)
+            } else if let text = parseText(scanner, context) {
+                content.append(text)
+            } else if scanner.scanNewLine() {
+                let positionBeforeLevelCheck = scanner.scanLocation
+                _ = scanner.scanWhiteSpace()
+                if scanner.scan("- ") || scanner.scan("1. ") {
+                    scanner.scanLocation = positionBeforeLevelCheck
+                    break
+                }
+                if scanner.peekEmptyLine() || scanner.isAtEnd {
+                    break
+                }
+            } else if scanner.isAtEnd {
+                break
+            } else {
+                return nil
+            }
+        }
+        
+        let paragraph = ParagraphElement(content)
+        return paragraph
     }
 
     private func parseHorizontalRule(_ scanner: Scanner, _ context: Context) -> HorizontalRuleElement? {

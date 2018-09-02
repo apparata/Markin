@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class ParagraphElement: BlockElement {
+public class ParagraphElement: BlockElement, ListEntryCompliant {
     
     public var content: [InlineElement]
     
@@ -73,7 +73,7 @@ public class ParagraphElement: BlockElement {
     
     // MARK: - Formatting
 
-    public override func formatAsMarkin() -> String {
+    public override func formatAsMarkin(level: Int = 0) -> String {
         return formatAsMarkin(lineSeparator: "\n")
     }
     

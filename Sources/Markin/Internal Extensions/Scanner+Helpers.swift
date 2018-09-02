@@ -62,12 +62,12 @@ extension Scanner {
         return scanString(string, into: nil)
     }
     
-    func scanCharacters(in characters: String) -> Bool {
+    func scanCharacters(in characters: String) -> String? {
         var output: NSString? = nil
         guard scanCharacters(from: CharacterSet(charactersIn: characters), into: &output) else {
-            return false
+            return nil
         }
-        return true
+        return output as String?
     }
     
     func scanUpTo(_ string: String) -> String? {
@@ -93,7 +93,7 @@ extension Scanner {
         return text
     }
     
-    func scanWhiteSpace() -> Bool {
+    func scanWhiteSpace() -> String? {
         return scanCharacters(in: " \t")
     }
     
@@ -104,7 +104,7 @@ extension Scanner {
     func scanUpToNewLine() -> String? {
         return scanUpTo("\n")
     }
-    
+        
     func skipThroughNewLine() -> Bool {
         let positionBefore = scanLocation
         _ = scanUpToNewLine()

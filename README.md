@@ -6,6 +6,10 @@ Markin is a Swift library for parsing a Markdown-like text format.
 
 The library is small, supports Swift Package Manager, and does not have any third party dependencies.
 
+The parser generates a tree of elements. The tree is `Codable` compliant.
+
+The tree can also be transformed back to Markin format. This means that Markin documents can parsed, manipulated programmatically by modifying or adding the element tree, and finally written back to file.
+
 ## License
 
 Markin is available under the MIT License. See the LICENSE file in the repository for details.
@@ -54,6 +58,28 @@ A block quote is formatted as text paragraphs, but each line is prefixed with a 
 >
 > This is the first line of the second paragraph
 > of the block quote.
+```
+
+### Lists
+
+Unordered list:
+
+```
+- First list entry
+- Second list entry
+    - First nested list entry
+    - Second nested list entry
+- Third list entry
+```
+
+Ordered lists:
+
+```
+1. First list entry
+1. Second list entry
+    1. First nested list entry
+    1. Second nested list entry
+1. Third list entry
 ```
 
 ### Code Blocks

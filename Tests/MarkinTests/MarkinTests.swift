@@ -24,15 +24,13 @@ This one on 2 lines.
 
 - First item in unordered list
 - Second item in unordered list
--
+    - First item in nested list
+    - Second item in nested list
 - Fourth item in unordered list
-
--
 
 1. First item in *ordered* list
 1. Second item in ordered list
-1.
-1. Fourth item in ordered list
+1. Third item in ordered list
 
 Create executable package:
 

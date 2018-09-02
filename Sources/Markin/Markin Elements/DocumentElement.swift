@@ -75,7 +75,7 @@ public class DocumentElement: MarkinElement {
     
     // MARK: - Formatting
     
-    public override func formatAsMarkin() -> String {
+    public override func formatAsMarkin(level: Int = 0) -> String {
         var string = ""
         for block in blocks {
             string += block.formatAsMarkin()

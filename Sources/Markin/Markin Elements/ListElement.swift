@@ -24,16 +24,19 @@
 
 import Foundation
 
-public class ListElement: BlockElement {
+public protocol ListEntryCompliant {}
+public typealias ListEntryElement = BlockElement & ListEntryCompliant
+
+public class ListElement: BlockElement, ListEntryCompliant {
     
     public var isOrdered: Bool
     
-    public var entries: [[InlineElement]]
+    public var entries: [ListEntryElement]
 
     // MARK: - Initialization
     
-    public init(isOrdered: Bool, entries: [[InlineElement]]) {
-        self.isOrdered = true
+    public init(isOrdered: Bool, entries: [ListEntryElement]) {
+        self.isOrdered = isOrdered
         self.entries = entries
         super.init()
     }
@@ -43,10 +46,28 @@ public class ListElement: BlockElement {
         case entries
     }
     
+    enum EntryTypeKey: String, CodingKey {
+        case elementType
+    }
+        
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         isOrdered = try container.decode(Bool.self, forKey: .isOrdered)
-        entries = try container.decode([[InlineElement]].self, forKey: .entries)
+        var entriesArrayForType = try container.nestedUnkeyedContainer(forKey: .entries)
+        var entries = [ListEntryElement]()
+        
+        var entriesArray = entriesArrayForType
+        while !entriesArrayForType.isAtEnd {
+            let entry = try entriesArrayForType.nestedContainer(keyedBy: EntryTypeKey.self)
+            let type = try entry.decode(String.self, forKey: .elementType)
+            switch type {
+            case "ListElement": entries.append(try entriesArray.decode(ListElement.self))
+            case "ParagraphElement": entries.append(try entriesArray.decode(ParagraphElement.self))
+            default: break
+            }
+        }
+        
+        self.entries = entries
         try super.init(from: decoder)
     }
     
@@ -54,18 +75,50 @@ public class ListElement: BlockElement {
         try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(isOrdered, forKey: .isOrdered)
-        try container.encode(entries, forKey: .entries)
+        try container.encode(entries as [BlockElement], forKey: CodingKeys.entries)
     }
     
     // MARK: - Formatting
 
-    public override func formatAsMarkin() -> String {
-        return ""
+    public override func formatAsMarkin(level: Int = 0) -> String {
+        var listEntries: [String] = []
+        for entry in entries {
+            if let paragraphEntry = entry as? ParagraphElement {
+                let paragraph = formatParagraphAsMarkin(paragraphEntry, level: level)
+                listEntries.append(paragraph)
+            } else if let listEntry = entry as? ListElement {
+                let list = listEntry.formatAsMarkin(level: level + 1)
+                listEntries.append(list)
+            }
+        }
+        var string = listEntries.joined(separator: "\n")
+        if level == 0 {
+            string += "\n"
+        }
+        return string
+    }
+    
+    private func formatParagraphAsMarkin(_ paragraph: ParagraphElement, level: Int) -> String {
+        let indent = String(repeating: "  ", count: level)
+        var string = indent + (isOrdered ? "1. " : "- ")
+        var previousElement: InlineElement?
+        for element in paragraph.content {
+            if previousElement is TextElement && element is TextElement {
+                string += "\n"
+            }
+            string += element.formatAsMarkin()
+            previousElement = element
+        }
+        return string
     }
     
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
-        let string = indent + "LIST(ordered: \(isOrdered)"
+        var string = indent + "LIST(ordered: \(isOrdered), \n"
+        for entry in entries {
+            string += entry.formatDebugString(level: level + 1)
+        }
+        string += indent + ")\n"
         return string
     }
 }

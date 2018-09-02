@@ -53,7 +53,7 @@ public class BlockQuoteElement: BlockElement {
     
     // MARK: - Formatting
     
-    public override func formatAsMarkin() -> String {
+    public override func formatAsMarkin(level: Int = 0) -> String {
         var paragraphs: [String] = []
         for paragraph in content {
             paragraphs.append(formatParagraphAsMarkin(paragraph))
