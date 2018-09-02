@@ -8,7 +8,7 @@ The library is small, supports Swift Package Manager, and does not have any thir
 
 The parser generates a tree of elements. The tree is `Codable` compliant.
 
-The tree can also be transformed back to Markin format. This means that Markin documents can parsed, manipulated programmatically by modifying/removing/replacing/adding tree elements, and written back to file.
+The tree can also be transformed back to Markin format. This means that Markin documents can be parsed, manipulated programmatically by modifying/removing/replacing/adding tree elements, and written back to file.
 
 The library has HTML rendering built-in, but external rendering of the element tree is entirely feasible. 
 
