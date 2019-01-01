@@ -104,7 +104,7 @@ extension Scanner {
     func scanUpToNewLine() -> String? {
         return scanUpTo("\n")
     }
-        
+    
     func skipThroughNewLine() -> Bool {
         let positionBefore = scanLocation
         _ = scanUpToNewLine()
@@ -131,10 +131,21 @@ extension Scanner {
     
     func scanText() -> String? {
         var strings: [String] = []
+        
+        // Compensate for image links.
+        if scan("!") {
+            strings.append("!")
+        }
+        
+        // Compensate for links.
+        if scan("[") {
+            strings.append("[")
+        }
+        
         while true {
             if let escapedCharacter = scanEscapedCharacter() {
                 strings.append(escapedCharacter)
-            } else if let string = scanUpToCharacter(in: "\\`*_\n"), !string.isEmpty {
+            } else if let string = scanUpToCharacter(in: "\\`*_![\n"), !string.isEmpty {
                 strings.append(string)
             } else {
                 break

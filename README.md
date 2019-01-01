@@ -185,3 +185,19 @@ Code can be written inline using single backticks \` like this:
 ```
 This is text that has `inline code` in it.
 ```
+
+### Links
+
+Links can be written on the form \[caption](url) like this:
+
+```
+This is text that has a [link](https://google.com) in it.
+```
+
+### Images
+
+Images can be written on the form \!\[caption](url) like this:
+
+```
+This is text that has an image [with alt text](mypicture.jpg) in it.
+```

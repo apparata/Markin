@@ -17,6 +17,12 @@ This is a cheat sheet for some common `Swift package manager` operations.
 Another paragraph.
 This one on 2 lines.
 
+[a link](https://google.com)
+
+Here's [a link](https://google.com) inline.
+
+Here's ![an image](/banana.jpg) inline.
+
 ### Blockquote
 
 > This right here is a block quote.

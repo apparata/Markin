@@ -31,7 +31,7 @@ public class MarkinParser {
     private let debugMode = false
     
     private class Context {
-
+        
         let markin: String
         let scanner: Scanner
         
@@ -59,6 +59,8 @@ public class MarkinParser {
         
         return blocks
     }
+    
+    // MARK: - Private
     
     private func parseBlocks(_ scanner: Scanner, _ context: Context) throws -> DocumentElement {
         if debugMode { print("[parseBlocks] Enter") }
@@ -145,7 +147,7 @@ public class MarkinParser {
             scanner.scanLocation = position
             return nil
         }
-
+        
         return HeaderElement(level: level, content: paragraph)
     }
     
@@ -157,17 +159,17 @@ public class MarkinParser {
         }
         
         let language = scanner.scanUpToNewLine()
-
+        
         guard scanner.scanNewLine() else {
             return nil
         }
-
+        
         guard let code = scanner.scanUpToAndSkip("\n```") else {
             return nil
         }
         
         _ = scanner.skipThroughNewLine()
-
+        
         var codeLanguage: String? = nil
         if let trimmedLanguage = language?.trimmingCharacters(in: .whitespaces) {
             if !trimmedLanguage.isEmpty {
@@ -205,11 +207,11 @@ public class MarkinParser {
             return BlockQuoteElement(content)
         }
     }
-
+    
     
     private func parseList(_ scanner: Scanner, _ context: Context, listLevel: Int? = nil) -> ListElement? {
         if debugMode { print("[parseList] Enter: " + scanner.peekNext(20) + "...") }
-
+        
         var isOrdered = false
         
         var entries: [ListEntryElement] = []
@@ -217,7 +219,7 @@ public class MarkinParser {
         let position = scanner.scanLocation
         
         var currentLevel: Int? = listLevel
-
+        
         while true {
             
             let positionBeforeLevelCheck = scanner.scanLocation
@@ -227,7 +229,7 @@ public class MarkinParser {
                 let onlySpaces = whiteSpace.replacingOccurrences(of: "\t", with: "  ")
                 level = onlySpaces.count / 2
             }
-
+            
             if scanner.scan("- ") {
                 isOrdered = false
             } else if scanner.scan("1. ") {
@@ -258,7 +260,7 @@ public class MarkinParser {
                     scanner.scanLocation = position
                     return nil
                 }
-
+                
                 entries.append(entry)
                 
                 if scanner.peekEmptyLine() || scanner.isAtEnd {
@@ -279,7 +281,7 @@ public class MarkinParser {
     
     private func parseListEntry(_ scanner: Scanner, _ context: Context) -> ListEntryElement? {
         if debugMode { print("[parseListEntry] Enter: " + scanner.peekNext(20) + "...") }
-
+        
         var content: [InlineElement] = []
         
         let positionBeforeLevelCheck = scanner.scanLocation
@@ -294,6 +296,10 @@ public class MarkinParser {
                 content.append(bold)
             } else if let italic = parseItalic(scanner, context) {
                 content.append(italic)
+            } else if let image = parseImage(scanner, context) {
+                content.append(image)
+            } else if let link = parseLink(scanner, context) {
+                content.append(link)
             } else if let code = parseCode(scanner, context) {
                 content.append(code)
             } else if let text = parseText(scanner, context) {
@@ -318,7 +324,7 @@ public class MarkinParser {
         let paragraph = ParagraphElement(content)
         return paragraph
     }
-
+    
     private func parseHorizontalRule(_ scanner: Scanner, _ context: Context) -> HorizontalRuleElement? {
         if debugMode { print("[parseHorizontalRule] Enter: " + scanner.peekNext(20) + "...") }
         
@@ -330,7 +336,7 @@ public class MarkinParser {
         scanner.scanLocation = position
         return nil
     }
-
+    
     private func parseParagraph(_ scanner: Scanner, _ context: Context, linePrefix: String? = nil) -> ParagraphElement? {
         if debugMode { print("[parseParagraph] Enter: " + scanner.peekNext(20) + "...") }
         
@@ -343,6 +349,10 @@ public class MarkinParser {
                 content.append(bold)
             } else if let italic = parseItalic(scanner, context) {
                 content.append(italic)
+            } else if let image = parseImage(scanner, context) {
+                content.append(image)
+            } else if let link = parseLink(scanner, context) {
+                content.append(link)
             } else if let code = parseCode(scanner, context) {
                 content.append(code)
             } else if let text = parseText(scanner, context) {
@@ -401,7 +411,7 @@ public class MarkinParser {
         
         return BoldElement(boldText)
     }
-
+    
     private func parseItalic(_ scanner: Scanner, _ context: Context) -> ItalicElement? {
         if debugMode { print("[parseItalic] Enter: " + scanner.peekNext(20) + "...") }
         
@@ -425,12 +435,74 @@ public class MarkinParser {
         
         return ItalicElement(italicText)
     }
-
+    
+    private func parseImage(_ scanner: Scanner, _ context: Context) -> ImageElement? {
+        if debugMode { print("[parseImage] Enter: " + scanner.peekNext(20) + "...") }
+        
+        let position = scanner.scanLocation
+        
+        guard scanner.scan("![") else {
+            return nil
+        }
+        
+        let captionText = scanner.scanUpToCharacter(in: "]\n")
+        
+        guard scanner.scan("](") else {
+            scanner.scanLocation = position
+            return nil
+        }
+        
+        let urlText = scanner.scanUpToCharacter(in: ")\n")
+        
+        guard scanner.scan(")") else {
+            scanner.scanLocation = position
+            return nil
+        }
+        
+        guard let caption = captionText, let url = urlText else {
+            scanner.scanLocation = position
+            return nil
+        }
+        
+        return ImageElement(caption, url)
+    }
+    
+    private func parseLink(_ scanner: Scanner, _ context: Context) -> LinkElement? {
+        if debugMode { print("[parseLink] Enter: " + scanner.peekNext(20) + "...") }
+        
+        let position = scanner.scanLocation
+        
+        guard scanner.scan("[") else {
+            return nil
+        }
+        
+        let captionText = scanner.scanUpToCharacter(in: "]\n")
+        
+        guard scanner.scan("](") else {
+            scanner.scanLocation = position
+            return nil
+        }
+        
+        let urlText = scanner.scanUpToCharacter(in: ")\n")
+        
+        guard scanner.scan(")") else {
+            scanner.scanLocation = position
+            return nil
+        }
+        
+        guard let caption = captionText, let url = urlText else {
+            scanner.scanLocation = position
+            return nil
+        }
+        
+        return LinkElement(caption, url)
+    }
+    
     private func parseCode(_ scanner: Scanner, _ context: Context) -> CodeElement? {
         if debugMode { print("[parseCode] Enter: " + scanner.peekNext(20) + "...") }
         
         let position = scanner.scanLocation
-
+        
         guard scanner.scan("`") else {
             return nil
         }
