@@ -199,5 +199,5 @@ This is text that has a [link](https://google.com) in it.
 Images can be written on the form \!\[caption](url) like this:
 
 ```
-This is text that has an image [with alt text](mypicture.jpg) in it.
+This is text that has an image ![with alt text](mypicture.jpg) in it.
 ```
