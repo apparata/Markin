@@ -201,3 +201,23 @@ Images can be written on the form \!\[caption](url) like this:
 ```
 This is text that has an image ![with alt text](mypicture.jpg) in it.
 ```
+
+## Inheritance Tree of Elements
+
+- `MarkinElement`
+    - `DocumentElement`
+    - `BlockElement`
+        - `BlockQuoteElement`
+        - `CodeBlockElement`
+        - `HeaderElement`
+        - `HorizontalRuleElement`
+        - `ListElement`
+        - `ParagraphElement`
+        - `TableOfContentsElement`
+    - `InlineElement`
+        - `BoldElement`
+        - `CodeElement`
+        - `ImageElement`
+        - `ItalicElement` 
+        - `LinkElement`
+        - `TextElement`

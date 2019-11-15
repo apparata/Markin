@@ -63,8 +63,10 @@ public class ParagraphElement: BlockElement, ListEntryCompliant {
             let type = try element.decode(String.self, forKey: .elementType)
             switch type {
             case "BoldElement": elements.append(try elementsArray.decode(BoldElement.self))
-            case "ItalicElement": elements.append(try elementsArray.decode(ItalicElement.self))
             case "CodeElement": elements.append(try elementsArray.decode(CodeElement.self))
+            case "ImageElement": elements.append(try elementsArray.decode(ImageElement.self))
+            case "ItalicElement": elements.append(try elementsArray.decode(ItalicElement.self))
+            case "LinkElement": elements.append(try elementsArray.decode(LinkElement.self))
             case "TextElement": elements.append(try elementsArray.decode(TextElement.self))
             default: break
             }

@@ -24,12 +24,12 @@
 
 import Foundation
 
-/// Bold text is achieved by using the marker \* as follows:
+/// Italic text is achieved by using the marker \_ as follows:
 ///
 /// ```
-/// The word *bold* is bold in this sentence.
+/// The word *italic* is in italics in this sentence.
 /// ```
-public class BoldElement: InlineElement {
+public class ItalicElement: InlineElement {
     
     public var content: InlineElement
     
@@ -46,7 +46,16 @@ public class BoldElement: InlineElement {
     
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        content = try container.decode(InlineElement.self, forKey: .content)
+        let element = try container.decode(InlineElement.self, forKey: .content)
+        switch element.elementType {
+        case "BoldElement": content = try container.decode(BoldElement.self, forKey: .content)
+        case "CodeElement": content = try container.decode(CodeElement.self, forKey: .content)
+        case "ImageElement": content = try container.decode(ImageElement.self, forKey: .content)
+        case "ItalicElement": content = try container.decode(ItalicElement.self, forKey: .content)
+        case "LinkElement": content = try container.decode(LinkElement.self, forKey: .content)
+        case "TextElement": content = try container.decode(TextElement.self, forKey: .content)
+        default: content = element
+        }
         try super.init(from: decoder)
     }
     
@@ -60,7 +69,7 @@ public class BoldElement: InlineElement {
 
     /// Transform the element and its children to a Markin formatted string.
     public override func formatAsMarkin(level: Int = 0) -> String {
-        let string = "*\(content.formatAsMarkin())*"
+        let string = "_\(content.formatAsMarkin())_"
         return string
     }
 
@@ -68,7 +77,7 @@ public class BoldElement: InlineElement {
     /// learning about the structure of the element tree.
     public override func formatDebugString(level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
-        var string = indent + "BOLD(\n"
+        var string = indent + "ITALIC(\n"
         string += content.formatDebugString(level: level + 1)
         string += indent + ")\n"
         return string
@@ -77,7 +86,7 @@ public class BoldElement: InlineElement {
     /// Render the element and its children as HTML.
     public override func formatAsHTML(_ document: DocumentElement? = nil, level: Int = 0) -> String {
         let indent = String(repeating: "  ", count: level)
-        let string = indent + "<strong>\(content.formatAsHTML(document))</strong>"
+        let string = indent + "<em>\(content.formatAsHTML(document))</em>"
         return string
     }
     
