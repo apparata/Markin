@@ -221,3 +221,18 @@ This is text that has an image ![with alt text](mypicture.jpg) in it.
         - `ItalicElement` 
         - `LinkElement`
         - `TextElement`
+        
+## Experimental SwiftUI Renderer
+
+You can try the experimental SwiftUI renderer by adding a `MarkinView` to your view.
+
+```Swift
+struct ContentView: View {
+    
+    let document: DocumentElement
+    
+    var body: some View {
+        MarkinView(document: document)
+    }
+}
+```
