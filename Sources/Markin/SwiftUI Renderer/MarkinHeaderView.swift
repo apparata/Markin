@@ -6,11 +6,11 @@
 
 import SwiftUI
 
-struct MarkinHeaderView: View {
+public struct MarkinHeaderView: View {
     
-    let element: HeaderElement
+    public let element: HeaderElement
     
-    var body: some View {
+    public var body: some View {
         MarkinParagraphView(element: element.content)
             .font(headerFont(level: element.level))
             .padding(padding(at: element.level))

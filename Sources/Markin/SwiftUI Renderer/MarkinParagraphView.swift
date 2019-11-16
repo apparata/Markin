@@ -6,11 +6,11 @@
 
 import SwiftUI
 
-struct MarkinParagraphView: View {
+public struct MarkinParagraphView: View {
     
-    let element: ParagraphElement
+    public let element: ParagraphElement
     
-    var body: some View {
+    public var body: some View {
         HStack {
             ForEach(makeParagraph(), id: \.self) { textOrImage in
                 textOrImage.view

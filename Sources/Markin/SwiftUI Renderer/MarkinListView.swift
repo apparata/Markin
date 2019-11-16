@@ -6,13 +6,13 @@
 
 import SwiftUI
 
-struct MarkinListView: View {
+public struct MarkinListView: View {
     
-    let element: ListElement
+    public let element: ListElement
     
-    let level: Int
+    public let level: Int
         
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading) {
             ForEach(element.entries as [BlockElement], id: \.self) { entry in
                 Group {

@@ -6,13 +6,13 @@
 
 import SwiftUI
 
-struct MarkinTableOfContentsView: View {
+public struct MarkinTableOfContentsView: View {
     
-    let element: TableOfContentsElement
+    public let element: TableOfContentsElement
     
-    let document: DocumentElement
+    public let document: DocumentElement
     
-    var body: some View {
+    public var body: some View {
         
         VStack(alignment: .leading) {
             ForEach(makeTOC(), id: \.self) { entry in

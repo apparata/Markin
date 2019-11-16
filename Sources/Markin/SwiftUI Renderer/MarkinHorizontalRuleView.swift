@@ -6,11 +6,11 @@
 
 import SwiftUI
 
-struct MarkinHorizontalRuleView: View {
+public struct MarkinHorizontalRuleView: View {
     
-    let element: HorizontalRuleElement
+    public let element: HorizontalRuleElement
     
-    var body: some View {
+    public var body: some View {
         Divider()
     }
 }

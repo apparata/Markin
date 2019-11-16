@@ -6,11 +6,11 @@
 
 import SwiftUI
 
-struct MarkinBlockQuoteView: View {
+public struct MarkinBlockQuoteView: View {
     
-    let element: BlockQuoteElement
+    public let element: BlockQuoteElement
     
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             ForEach(element.content, id: \.self) { paragraph in
                 MarkinParagraphView(element: paragraph)

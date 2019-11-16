@@ -6,11 +6,11 @@
 
 import SwiftUI
 
-struct MarkinDocumentView: View {
+public struct MarkinDocumentView: View {
     
-    let element: DocumentElement
+    public let element: DocumentElement
     
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading) {
             ForEach(element.blocks, id: \.self) { block in
                 Group {

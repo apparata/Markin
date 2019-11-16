@@ -6,11 +6,11 @@
 
 import SwiftUI
 
-struct MarkinView: View {
+public struct MarkinView: View {
     
-    let document: DocumentElement
+    public let document: DocumentElement
     
-    var body: some View {
+    public var body: some View {
         ScrollView {
             MarkinDocumentView(element: document)
                 .padding()

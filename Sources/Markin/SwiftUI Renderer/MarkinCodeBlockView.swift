@@ -6,11 +6,11 @@
 
 import SwiftUI
 
-struct MarkinCodeBlockView: View {
+public struct MarkinCodeBlockView: View {
     
-    let element: CodeBlockElement
+    public let element: CodeBlockElement
     
-    var body: some View {
+    public var body: some View {
         Text(element.content)
             .font(.system(size: 13, weight: .regular, design: .monospaced))
             .frame(maxWidth: .infinity, alignment: .leading)
