@@ -30,26 +30,26 @@ extension Scanner {
         if isAtEnd {
             return ""
         }
-        let start = scanLocation
-        let end = min(start + count, string.count)
-        return string[start...end - 1]
+        let start = currentIndex
+        let end = string.index(start, offsetBy: count, limitedBy: string.endIndex) ?? string.endIndex
+        return String(string[start..<end])
     }
     
     func peek(_ string: String) -> Bool {
-        let positionBefore = scanLocation
+        let positionBefore = currentIndex
         defer {
-            scanLocation = positionBefore
+            currentIndex = positionBefore
         }
-        if scanString(string, into: nil) {
+        if scanString(string) != nil {
             return true
         }
         return false
     }
     
     func peekEmptyLine() -> Bool {
-        let positionBefore = scanLocation
+        let positionBefore = currentIndex
         defer {
-            scanLocation = positionBefore
+            currentIndex = positionBefore
         }
         _ = scanWhiteSpace()
         if scanNewLine() {
@@ -59,35 +59,18 @@ extension Scanner {
     }
     
     func scan(_ string: String) -> Bool {
-        return scanString(string, into: nil)
+        return scanString(string) != nil
     }
     
     func scanCharacters(in characters: String) -> String? {
-        var output: NSString? = nil
-        guard scanCharacters(from: CharacterSet(charactersIn: characters), into: &output) else {
+        guard let output = scanCharacters(from: CharacterSet(charactersIn: characters)) else {
             return nil
         }
-        return output as String?
+        return output
     }
-    
-    func scanUpTo(_ string: String) -> String? {
-        var output: NSString? = nil
-        guard scanUpTo(string, into: &output) else {
-            return nil
-        }
-        return output as String?
-    }
-    
-    func scanUpToCharacter(in characters: String) -> String? {
-        var output: NSString? = nil
-        guard scanUpToCharacters(from: CharacterSet(charactersIn: characters), into: &output) else {
-            return nil
-        }
-        return output as String?
-    }
-    
+            
     func scanUpToAndSkip(_ string: String) -> String? {
-        guard let text = scanUpTo(string), scan(string) else {
+        guard let text = scanUpToString(string), scan(string) else {
             return nil
         }
         return text
@@ -98,18 +81,18 @@ extension Scanner {
     }
     
     func scanNewLine() -> Bool {
-        return scanString("\n", into: nil)
+        return scanString("\n") != nil
     }
     
     func scanUpToNewLine() -> String? {
-        return scanUpTo("\n")
+        return scanUpToString("\n")
     }
     
     func skipThroughNewLine() -> Bool {
-        let positionBefore = scanLocation
+        let positionBefore = currentIndex
         _ = scanUpToNewLine()
         guard scanNewLine() else {
-            scanLocation = positionBefore
+            currentIndex = positionBefore
             return false
         }
         return true
@@ -120,10 +103,10 @@ extension Scanner {
     }
     
     func skipEmptyLine() -> Bool {
-        let positionBefore = scanLocation
+        let positionBefore = currentIndex
         _ = scanWhiteSpace()
         guard scanNewLine() else {
-            scanLocation = positionBefore
+            currentIndex = positionBefore
             return false
         }
         return true
@@ -145,7 +128,7 @@ extension Scanner {
         while true {
             if let escapedCharacter = scanEscapedCharacter() {
                 strings.append(escapedCharacter)
-            } else if let string = scanUpToCharacter(in: "\\`*_![\n"), !string.isEmpty {
+            } else if let string = scanUpToCharacters(from: CharacterSet(charactersIn: "\\`*_![\n")), !string.isEmpty {
                 strings.append(string)
             } else {
                 break
@@ -159,7 +142,7 @@ extension Scanner {
     }
     
     func scanEscapedCharacter() -> String? {
-        let position = scanLocation
+        let position = currentIndex
         if scan("\\") {
             if scan("\\") {
                 return "\\"
@@ -192,7 +175,7 @@ extension Scanner {
             } else if scan("!") {
                 return "!"
             } else {
-                scanLocation = position
+                currentIndex = position
                 return nil
             }
         }

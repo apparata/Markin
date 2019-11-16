@@ -4,6 +4,9 @@ import PackageDescription
 
 let package = Package(
     name: "Markin",
+    platforms: [
+        .macOS(.v10_15), .iOS(.v13)
+    ],
     products: [
         .library(name: "Markin", targets: ["Markin"]),
     ],
