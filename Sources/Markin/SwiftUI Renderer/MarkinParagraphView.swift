@@ -10,6 +10,10 @@ public struct MarkinParagraphView: View {
     
     public let element: ParagraphElement
     
+    public init(element: ParagraphElement) {
+        self.element = element
+    }
+    
     public var body: some View {
         HStack {
             ForEach(makeParagraph(), id: \.self) { textOrImage in

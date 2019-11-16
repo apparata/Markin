@@ -10,6 +10,10 @@ public struct MarkinDocumentView: View {
     
     public let element: DocumentElement
     
+    public init(element: DocumentElement) {
+        self.element = element
+    }
+    
     public var body: some View {
         VStack(alignment: .leading) {
             ForEach(element.blocks, id: \.self) { block in

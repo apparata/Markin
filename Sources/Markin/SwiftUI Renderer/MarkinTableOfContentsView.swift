@@ -12,6 +12,12 @@ public struct MarkinTableOfContentsView: View {
     
     public let document: DocumentElement
     
+    public init(element: TableOfContentsElement,
+                document: DocumentElement) {
+        self.element = element
+        self.document = document
+    }
+    
     public var body: some View {
         
         VStack(alignment: .leading) {

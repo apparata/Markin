@@ -10,6 +10,10 @@ public struct MarkinHorizontalRuleView: View {
     
     public let element: HorizontalRuleElement
     
+    public init(element: HorizontalRuleElement) {
+        self.element = element
+    }
+    
     public var body: some View {
         Divider()
     }

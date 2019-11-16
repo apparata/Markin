@@ -10,6 +10,10 @@ public struct MarkinHeaderView: View {
     
     public let element: HeaderElement
     
+    public init(element: HeaderElement) {
+        self.element = element
+    }
+    
     public var body: some View {
         MarkinParagraphView(element: element.content)
             .font(headerFont(level: element.level))

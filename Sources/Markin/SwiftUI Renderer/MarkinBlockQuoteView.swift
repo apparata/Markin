@@ -10,6 +10,10 @@ public struct MarkinBlockQuoteView: View {
     
     public let element: BlockQuoteElement
     
+    public init(element: BlockQuoteElement) {
+        self.element = element
+    }
+    
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             ForEach(element.content, id: \.self) { paragraph in

@@ -11,6 +11,11 @@ public struct MarkinListView: View {
     public let element: ListElement
     
     public let level: Int
+    
+    public init(element: ListElement, level: Int) {
+        self.element = element
+        self.level = level
+    }
         
     public var body: some View {
         VStack(alignment: .leading) {

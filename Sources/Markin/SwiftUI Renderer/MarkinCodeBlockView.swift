@@ -10,6 +10,10 @@ public struct MarkinCodeBlockView: View {
     
     public let element: CodeBlockElement
     
+    public init(element: CodeBlockElement) {
+        self.element = element
+    }
+    
     public var body: some View {
         Text(element.content)
             .font(.system(size: 13, weight: .regular, design: .monospaced))
