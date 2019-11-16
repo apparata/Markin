@@ -68,3 +68,13 @@ public class MarkinElement: Codable {
     }
 }
 
+extension MarkinElement: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+    
+    public static func == (lhs: MarkinElement, rhs: MarkinElement) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+}
