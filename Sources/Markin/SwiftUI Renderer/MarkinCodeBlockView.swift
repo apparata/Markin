@@ -18,13 +18,21 @@ public struct MarkinCodeBlockView: View {
     }
     
     public var body: some View {
-        Text(element.content)
-            .font(style.codeBlock.font)
+        makeText()
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
-            .background(Color(.sRGB, white: 0.0, opacity: 0.05))
+            .background(style.codeBlock.background)
             // Workaround, or the text will be truncated
             .fixedSize(horizontal: false, vertical: true)
+    }
+    
+    private func makeText() -> Text {
+        if let text = style.codeBlock.formatter?(element.content) {
+            return text
+        } else {
+            return Text(element.content)
+                .font(style.codeBlock.font)
+        }
     }
 }
 

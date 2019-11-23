@@ -9,7 +9,8 @@ public struct HeaderStyle {
     public var font: Font
     public var padding: EdgeInsets
     
-    public init(font: Font, padding: EdgeInsets) {
+    public init(font: Font = Font.largeTitle.weight(.bold),
+                padding: EdgeInsets) {
         self.font = font
         self.padding = padding
     }
@@ -38,9 +39,15 @@ public struct CodeStyle {
 public struct CodeBlockStyle {
     
     public var font: Font
+    public var background: Color
+    public var formatter: ((String) -> Text)?
     
-    public init(font: Font) {
+    public init(font: Font,
+                background: Color = Color(.sRGB, white: 0.0, opacity: 0.05),
+                formatter: ((String) -> Text)? = nil) {
         self.font = font
+        self.background = background
+        self.formatter = formatter
     }
 }
 
@@ -90,7 +97,7 @@ public class MarkinStyle: ObservableObject {
     
     public init(
         spacing: CGFloat = 16,
-        header1: HeaderStyle = .init(font: Font.largeTitle.weight(.bold),
+        header1: HeaderStyle = HeaderStyle.init(font: Font.largeTitle.weight(.bold),
                                      padding: EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)),
         header2: HeaderStyle = .init(font: Font.title.weight(.bold),
                                      padding: EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)),
