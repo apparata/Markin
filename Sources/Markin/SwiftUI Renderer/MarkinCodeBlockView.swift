@@ -27,7 +27,7 @@ public struct MarkinCodeBlockView: View {
     }
     
     private func makeText() -> Text {
-        if let text = style.codeBlock.formatter?(element.content) {
+        if let text = style.codeBlock.formatter?(element) {
             return text
         } else {
             return Text(element.content)

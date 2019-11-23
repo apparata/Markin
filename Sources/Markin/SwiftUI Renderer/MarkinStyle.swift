@@ -40,11 +40,11 @@ public struct CodeBlockStyle {
     
     public var font: Font
     public var background: Color
-    public var formatter: ((String) -> Text)?
+    public var formatter: ((CodeBlockElement) -> Text?)?
     
     public init(font: Font,
                 background: Color = Color(.sRGB, white: 0.0, opacity: 0.05),
-                formatter: ((String) -> Text)? = nil) {
+                formatter: ((CodeBlockElement) -> Text?)? = nil) {
         self.font = font
         self.background = background
         self.formatter = formatter
