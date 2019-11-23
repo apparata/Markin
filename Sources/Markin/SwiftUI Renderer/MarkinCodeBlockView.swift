@@ -22,6 +22,7 @@ public struct MarkinCodeBlockView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             .background(style.codeBlock.background)
+            .cornerRadius(style.codeBlock.cornerRadius)
             // Workaround, or the text will be truncated
             .fixedSize(horizontal: false, vertical: true)
     }

@@ -40,13 +40,16 @@ public struct CodeBlockStyle {
     
     public var font: Font
     public var background: Color
+    public var cornerRadius: CGFloat
     public var formatter: ((CodeBlockElement) -> Text?)?
     
     public init(font: Font,
                 background: Color = Color(.sRGB, white: 0.0, opacity: 0.05),
+                cornerRadius: CGFloat = 0,
                 formatter: ((CodeBlockElement) -> Text?)? = nil) {
         self.font = font
         self.background = background
+        self.cornerRadius = 0
         self.formatter = formatter
     }
 }
