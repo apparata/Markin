@@ -9,7 +9,7 @@ import SwiftUI
 public struct MarkinHorizontalRuleView: View {
     
     public let element: HorizontalRuleElement
-    
+        
     public init(element: HorizontalRuleElement) {
         self.element = element
     }

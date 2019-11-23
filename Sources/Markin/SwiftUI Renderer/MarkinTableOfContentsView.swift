@@ -12,6 +12,8 @@ public struct MarkinTableOfContentsView: View {
     
     public let document: DocumentElement
     
+    @EnvironmentObject var style: MarkinStyle
+    
     public init(element: TableOfContentsElement,
                 document: DocumentElement) {
         self.element = element

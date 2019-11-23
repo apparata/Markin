@@ -10,6 +10,8 @@ public struct MarkinBlockQuoteView: View {
     
     public let element: BlockQuoteElement
     
+    @EnvironmentObject var style: MarkinStyle
+    
     public init(element: BlockQuoteElement) {
         self.element = element
     }
@@ -24,9 +26,9 @@ public struct MarkinBlockQuoteView: View {
         .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
         .background(
             ZStack {
-                Color.yellow.opacity(0.1)
+                style.blockQuote.color.opacity(0.1)
                 HStack {
-                    Color.yellow.frame(maxWidth: 4)
+                    style.blockQuote.color.frame(maxWidth: 4)
                     Spacer()
                 }
             }

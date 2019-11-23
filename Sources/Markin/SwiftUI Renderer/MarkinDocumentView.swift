@@ -10,6 +10,8 @@ public struct MarkinDocumentView: View {
     
     public let element: DocumentElement
     
+    @EnvironmentObject var style: MarkinStyle
+    
     public init(element: DocumentElement) {
         self.element = element
     }
@@ -34,7 +36,7 @@ public struct MarkinDocumentView: View {
                             .padding(.bottom, 16)
                     } else if block is ParagraphElement {
                         MarkinParagraphView(element: block as! ParagraphElement)
-                            .font(.system(size: 15))
+                            .font(self.style.body.font)
                             .lineSpacing(2)
                             .padding(.bottom, 16)
                     } else if block is TableOfContentsElement {

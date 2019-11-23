@@ -10,6 +10,8 @@ public struct MarkinParagraphView: View {
     
     public let element: ParagraphElement
     
+    @EnvironmentObject var style: MarkinStyle
+    
     public init(element: ParagraphElement) {
         self.element = element
     }
@@ -29,7 +31,7 @@ public struct MarkinParagraphView: View {
         var textOrImages: [TextOrImage] = []
         var text: Text?
         for subelement in element.content {
-            if let subtext = subelement.makeText() {
+            if let subtext = subelement.makeText(style: style) {
                 if let accumulatedText = text {
                     text = accumulatedText + Text(" ") + subtext
                 } else {
@@ -103,22 +105,22 @@ class TextOrImage: Hashable {
 }
 
 protocol MarkinTextOrImageConvertible {
-    func makeText() -> Text?
+    func makeText(style: MarkinStyle) -> Text?
     func makeImage() -> Image?
 }
 
 extension InlineElement: MarkinTextOrImageConvertible {
     
-    func makeText() -> Text? {
+    func makeText(style: MarkinStyle) -> Text? {
         switch self {
         case let element as BoldElement:
-            return element.content.makeText()?.fontWeight(.bold)
+            return element.content.makeText(style: style)?.fontWeight(.bold)
         case let element as CodeElement:
             return Text(element.content)
-                .font(.system(size: 14, weight: .regular, design: .monospaced))
-                .foregroundColor(Color.purple)
+                .font(style.code.font)
+                .foregroundColor(style.code.color)
         case let element as ItalicElement:
-            return element.content.makeText()?.italic()
+            return element.content.makeText(style: style)?.italic()
         case let element as LinkElement:
             return Text(element.content)
                 .foregroundColor(Color.blue)

@@ -10,6 +10,8 @@ public struct MarkinHeaderView: View {
     
     public let element: HeaderElement
     
+    @EnvironmentObject var style: MarkinStyle
+    
     public init(element: HeaderElement) {
         self.element = element
     }
@@ -22,25 +24,25 @@ public struct MarkinHeaderView: View {
     
     private func headerFont(level: Int) -> Font {
         switch level {
-        case 1: return Font.largeTitle.weight(.bold)
-        case 2: return Font.title.weight(.bold)
-        case 3: return Font.headline.weight(.semibold)
-        case 4: return Font.subheadline.weight(.semibold)
-        case 5: return Font.body.weight(.bold)
-        case 6: return Font.caption.weight(.bold)
-        default: return Font.body.weight(.semibold)
+        case 1: return style.header1.font
+        case 2: return style.header2.font
+        case 3: return style.header3.font
+        case 4: return style.header4.font
+        case 5: return style.header5.font
+        case 6: return style.header6.font
+        default: return style.header6.font
         }
     }
     
     private func padding(at level: Int) -> EdgeInsets {
         switch level {
-        case 1: return EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)
-        case 2: return EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)
-        case 3: return EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)
-        case 4: return EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)
-        case 5: return EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)
-        case 6: return EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)
-        default: return EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)
+        case 1: return style.header1.padding
+        case 2: return style.header2.padding
+        case 3: return style.header3.padding
+        case 4: return style.header4.padding
+        case 5: return style.header5.padding
+        case 6: return style.header6.padding
+        default: return style.header6.padding
         }
     }
 }

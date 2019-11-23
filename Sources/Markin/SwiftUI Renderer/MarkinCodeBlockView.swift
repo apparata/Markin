@@ -10,13 +10,15 @@ public struct MarkinCodeBlockView: View {
     
     public let element: CodeBlockElement
     
+    @EnvironmentObject var style: MarkinStyle
+    
     public init(element: CodeBlockElement) {
         self.element = element
     }
     
     public var body: some View {
         Text(element.content)
-            .font(.system(size: 13, weight: .regular, design: .monospaced))
+            .font(style.codeBlock.font)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             .background(Color(.sRGB, white: 0.0, opacity: 0.05))

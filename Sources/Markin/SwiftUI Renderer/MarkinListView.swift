@@ -12,6 +12,8 @@ public struct MarkinListView: View {
     
     public let level: Int
     
+    @EnvironmentObject var style: MarkinStyle
+    
     public init(element: ListElement, level: Int) {
         self.element = element
         self.level = level
@@ -27,13 +29,14 @@ public struct MarkinListView: View {
                         HStack {
                             Text(self.element.isOrdered ? "1." : "•")
                                 .fontWeight(self.element.isOrdered ? .bold : .black)
-                                .font(.system(size: self.element.isOrdered ? 14 : 16))
+                                .font(self.element.isOrdered ? self.style.list.orderedBulletFont
+                                                             : self.style.list.bulletFont)
                                 .lineSpacing(2)
-                                .padding(.bottom, 8)
+                                .padding(.bottom, self.style.list.spacing)
                             MarkinParagraphView(element: entry as! ParagraphElement)
-                                .font(.system(size: 15))
+                                .font(self.style.list.font)
                                 .lineSpacing(2)
-                                .padding(.bottom, 8)
+                                .padding(.bottom, self.style.list.spacing)
                         }
                     }
                 }

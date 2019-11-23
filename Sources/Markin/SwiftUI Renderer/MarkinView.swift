@@ -10,8 +10,11 @@ public struct MarkinView: View {
     
     public let document: DocumentElement
     
-    public init(document: DocumentElement) {
+    @ObservedObject var style: MarkinStyle
+    
+    public init(document: DocumentElement, style: MarkinStyle) {
         self.document = document
+        self.style = style
     }
     
     public var body: some View {
@@ -19,6 +22,7 @@ public struct MarkinView: View {
             MarkinDocumentView(element: document)
                 .padding()
                 .padding()
+                .environmentObject(style)
         }
     }
 }
