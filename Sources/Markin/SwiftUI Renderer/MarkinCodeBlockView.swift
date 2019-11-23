@@ -10,10 +10,11 @@ public struct MarkinCodeBlockView: View {
     
     public let element: CodeBlockElement
     
-    @EnvironmentObject var style: MarkinStyle
+    @ObservedObject public var style: MarkinStyle
     
-    public init(element: CodeBlockElement) {
+    public init(element: CodeBlockElement, style: MarkinStyle) {
         self.element = element
+        self.style = style
     }
     
     public var body: some View {

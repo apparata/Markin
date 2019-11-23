@@ -10,16 +10,17 @@ public struct MarkinBlockQuoteView: View {
     
     public let element: BlockQuoteElement
     
-    @EnvironmentObject var style: MarkinStyle
+    @ObservedObject public var style: MarkinStyle
     
-    public init(element: BlockQuoteElement) {
+    public init(element: BlockQuoteElement, style: MarkinStyle) {
         self.element = element
+        self.style = style
     }
     
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             ForEach(element.content, id: \.self) { paragraph in
-                MarkinParagraphView(element: paragraph)
+                MarkinParagraphView(element: paragraph, style: self.style)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -28,7 +29,7 @@ public struct MarkinBlockQuoteView: View {
             ZStack {
                 style.blockQuote.color.opacity(0.1)
                 HStack {
-                    style.blockQuote.color.frame(maxWidth: 4)
+                    self.style.blockQuote.color.frame(maxWidth: 4)
                     Spacer()
                 }
             }

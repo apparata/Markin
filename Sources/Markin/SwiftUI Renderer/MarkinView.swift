@@ -10,7 +10,7 @@ public struct MarkinView: View {
     
     public let document: DocumentElement
     
-    @ObservedObject var style: MarkinStyle
+    @ObservedObject public var style: MarkinStyle
     
     public init(document: DocumentElement, style: MarkinStyle) {
         self.document = document
@@ -19,10 +19,9 @@ public struct MarkinView: View {
     
     public var body: some View {
         ScrollView {
-            MarkinDocumentView(element: document)
+            MarkinDocumentView(element: document, style: style)
                 .padding()
                 .padding()
-                .environmentObject(style)
         }
     }
 }

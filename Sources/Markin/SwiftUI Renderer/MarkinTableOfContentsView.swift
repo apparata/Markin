@@ -12,12 +12,14 @@ public struct MarkinTableOfContentsView: View {
     
     public let document: DocumentElement
     
-    @EnvironmentObject var style: MarkinStyle
-    
+    @ObservedObject public var style: MarkinStyle
+
     public init(element: TableOfContentsElement,
-                document: DocumentElement) {
+                document: DocumentElement,
+                style: MarkinStyle) {
         self.element = element
         self.document = document
+        self.style = style
     }
     
     public var body: some View {

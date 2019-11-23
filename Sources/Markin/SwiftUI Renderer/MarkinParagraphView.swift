@@ -10,10 +10,11 @@ public struct MarkinParagraphView: View {
     
     public let element: ParagraphElement
     
-    @EnvironmentObject var style: MarkinStyle
-    
-    public init(element: ParagraphElement) {
+    @ObservedObject public var style: MarkinStyle
+
+    public init(element: ParagraphElement, style: MarkinStyle) {
         self.element = element
+        self.style = style
     }
     
     public var body: some View {

@@ -10,14 +10,15 @@ public struct MarkinHeaderView: View {
     
     public let element: HeaderElement
     
-    @EnvironmentObject var style: MarkinStyle
-    
-    public init(element: HeaderElement) {
+    @ObservedObject public var style: MarkinStyle
+
+    public init(element: HeaderElement, style: MarkinStyle) {
         self.element = element
+        self.style = style
     }
     
     public var body: some View {
-        MarkinParagraphView(element: element.content)
+        MarkinParagraphView(element: element.content, style: style)
             .font(headerFont(level: element.level))
             .padding(padding(at: element.level))
     }
