@@ -49,7 +49,7 @@ public struct CodeBlockStyle {
                 formatter: ((CodeBlockElement) -> Text?)? = nil) {
         self.font = font
         self.background = background
-        self.cornerRadius = 0
+        self.cornerRadius = cornerRadius
         self.formatter = formatter
     }
 }
