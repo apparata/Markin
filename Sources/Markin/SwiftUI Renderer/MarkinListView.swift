@@ -27,7 +27,7 @@ public struct MarkinListView: View {
                     if entry is ListElement {
                         MarkinListView(element: entry as! ListElement, level: self.level + 1, style: self.style)
                     } else if entry is ParagraphElement {
-                        HStack {
+                        HStack(alignment: .top) {
                             Text(self.element.isOrdered ? "1." : "•")
                                 .fontWeight(self.element.isOrdered ? .bold : .black)
                                 .font(self.element.isOrdered ? self.style.list.orderedBulletFont
