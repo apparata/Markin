@@ -19,9 +19,14 @@ public struct MarkinView: View {
     
     public var body: some View {
         ScrollView {
+#if os(macOS)
             MarkinDocumentView(element: document, style: style)
                 .padding()
                 .padding()
+#else
+            MarkinDocumentView(element: document, style: style)
+                .padding()
+#endif
         }
     }
 }
