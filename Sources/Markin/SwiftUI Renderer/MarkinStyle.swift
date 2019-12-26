@@ -7,11 +7,14 @@ import SwiftUI
 public struct HeaderStyle {
     
     public var font: Font
+    public var textColor: Color
     public var padding: EdgeInsets
     
     public init(font: Font = Font.largeTitle.weight(.bold),
+                textColor: Color = Color.primary,
                 padding: EdgeInsets) {
         self.font = font
+        self.textColor = textColor
         self.padding = padding
     }
 }
@@ -19,9 +22,11 @@ public struct HeaderStyle {
 public struct BodyStyle {
     
     public var font: Font
-    
-    public init(font: Font) {
+    public var textColor: Color
+
+    public init(font: Font, textColor: Color = Color.primary) {
         self.font = font
+        self.textColor = textColor
     }
 }
 
@@ -68,15 +73,18 @@ public struct BlockQuoteStyle {
 public struct ListStyle {
     
     public var font: Font
+    public var textColor: Color
     public var spacing: CGFloat
     public var orderedBulletFont: Font
     public var bulletFont: Font
     
     public init(font: Font,
+                textColor: Color = .primary,
                 spacing: CGFloat,
                 orderedBulletFont: Font,
                 bulletFont: Font) {
         self.font = font
+        self.textColor = textColor
         self.spacing = spacing
         self.orderedBulletFont = orderedBulletFont
         self.bulletFont = bulletFont
@@ -100,24 +108,31 @@ public class MarkinStyle: ObservableObject {
     
     public init(
         spacing: CGFloat = 16,
-        header1: HeaderStyle = HeaderStyle.init(font: Font.largeTitle.weight(.bold),
+        header1: HeaderStyle = .init(font: Font.largeTitle.weight(.bold),
+                                     textColor: .primary,
                                      padding: EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)),
         header2: HeaderStyle = .init(font: Font.title.weight(.bold),
+                                     textColor: .primary,
                                      padding: EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)),
         header3: HeaderStyle = .init(font: Font.headline.weight(.semibold),
+                                     textColor: .primary,
                                      padding: EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)),
         header4: HeaderStyle = .init(font: Font.subheadline.weight(.semibold),
+                                     textColor: .primary,
                                      padding: EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)),
         header5: HeaderStyle = .init(font: Font.body.weight(.bold),
+                                     textColor: .primary,
                                      padding: EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)),
         header6: HeaderStyle = .init(font: Font.caption.weight(.bold),
+                                     textColor: .primary,
                                      padding: EdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)),
-        body: BodyStyle = .init(font: .system(size: 15)),
+        body: BodyStyle = .init(font: .system(size: 15), textColor: .primary),
         code: CodeStyle = .init(font: .system(size: 14, weight: .regular, design: .monospaced),
                                 color: .purple),
         codeBlock: CodeBlockStyle = .init(font: .system(size: 13, weight: .regular, design: .monospaced)),
         blockQuote: BlockQuoteStyle = .init(color: .yellow, padding: 16),
         list: ListStyle = .init(font: .system(size: 15),
+                                textColor: .primary,
                                 spacing: 8,
                                 orderedBulletFont: .system(size: 14),
                                 bulletFont: .system(size: 16))

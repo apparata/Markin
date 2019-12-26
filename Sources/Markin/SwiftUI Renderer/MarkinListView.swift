@@ -33,10 +33,12 @@ public struct MarkinListView: View {
                                 .font(self.element.isOrdered ? self.style.list.orderedBulletFont
                                                              : self.style.list.bulletFont)
                                 .lineSpacing(2)
+                                .foregroundColor(self.style.list.textColor)
                                 .padding(.bottom, self.style.list.spacing)
                             MarkinParagraphView(element: entry as! ParagraphElement, style: self.style)
                                 .font(self.style.list.font)
                                 .lineSpacing(2)
+                                .foregroundColor(self.style.list.textColor)
                                 .padding(.bottom, self.style.list.spacing)
                         }
                     }

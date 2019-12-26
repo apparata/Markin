@@ -39,6 +39,7 @@ public struct MarkinDocumentView: View {
                         MarkinParagraphView(element: block as! ParagraphElement, style: self.style)
                             .font(self.style.body.font)
                             .lineSpacing(2)
+                            .foregroundColor(self.style.body.textColor)
                             .padding(.bottom, self.style.spacing)
                     } else if block is TableOfContentsElement {
                         MarkinTableOfContentsView(element: block as! TableOfContentsElement,

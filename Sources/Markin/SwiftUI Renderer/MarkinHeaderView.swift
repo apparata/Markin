@@ -20,6 +20,7 @@ public struct MarkinHeaderView: View {
     public var body: some View {
         MarkinParagraphView(element: element.content, style: style)
             .font(headerFont(level: element.level))
+            .foregroundColor(headerTextColor(level: element.level))
             .padding(padding(at: element.level))
     }
     
@@ -34,7 +35,19 @@ public struct MarkinHeaderView: View {
         default: return style.header6.font
         }
     }
-    
+
+    private func headerTextColor(level: Int) -> Color {
+        switch level {
+        case 1: return style.header1.textColor
+        case 2: return style.header2.textColor
+        case 3: return style.header3.textColor
+        case 4: return style.header4.textColor
+        case 5: return style.header5.textColor
+        case 6: return style.header6.textColor
+        default: return style.header6.textColor
+        }
+    }
+
     private func padding(at level: Int) -> EdgeInsets {
         switch level {
         case 1: return style.header1.padding
