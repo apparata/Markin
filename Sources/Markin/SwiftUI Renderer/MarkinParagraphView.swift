@@ -18,20 +18,36 @@ public struct MarkinParagraphView: View {
     }
     
     public var body: some View {
-        HStack {
-            ForEach(makeParagraph(), id: \.self) { textOrImage in
-                textOrImage.view
-                    .lineLimit(nil)
-                    // Workaround, or the text will be truncated
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }.frame(maxWidth: .infinity, alignment: .leading)
+        let (paragraph, link) = makeParagraph()
+        if let url = link, #available(iOS 14, macOS 11, *) {
+            Link(destination: url, label: {
+                HStack {
+                    ForEach(paragraph, id: \.self) { textOrImage in
+                        textOrImage.view
+                            .lineLimit(nil)
+                            // Workaround, or the text will be truncated
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }.frame(maxWidth: .infinity, alignment: .leading)
+            })
+        } else {
+            HStack {
+                ForEach(paragraph, id: \.self) { textOrImage in
+                    textOrImage.view
+                        .lineLimit(nil)
+                        // Workaround, or the text will be truncated
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }.frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
-        
-    private func makeParagraph() -> [TextOrImage] {
+    
+    private func makeParagraph() -> ([TextOrImage], URL?) {
         var textOrImages: [TextOrImage] = []
         var text: Text?
+        var link: URL?
         for subelement in element.content {
+            link = subelement.extractLink()
             if let subtext = subelement.makeText(style: style) {
                 if let accumulatedText = text {
                     text = accumulatedText + Text(" ") + subtext
@@ -55,7 +71,7 @@ public struct MarkinParagraphView: View {
                 textOrImage.isImageCentered = true
             }
         }
-        return textOrImages
+        return (textOrImages, link)
     }
 }
 
@@ -106,11 +122,22 @@ class TextOrImage: Hashable {
 }
 
 protocol MarkinTextOrImageConvertible {
+    /// We will only support one link per paragraph.
+    func extractLink() -> URL?
     func makeText(style: MarkinStyle) -> Text?
     func makeImage() -> Image?
 }
 
 extension InlineElement: MarkinTextOrImageConvertible {
+    
+    func extractLink() -> URL? {
+        switch self {
+        case let element as LinkElement:
+            return URL(string: element.url)
+        default:
+            return nil
+        }
+    }
     
     func makeText(style: MarkinStyle) -> Text? {
         switch self {
