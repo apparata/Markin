@@ -50,7 +50,7 @@ public struct MarkinParagraphView: View {
             link = subelement.extractLink()
             if let subtext = subelement.makeText(style: style) {
                 if let accumulatedText = text {
-                    text = accumulatedText + Text(" ") + subtext
+                    text = accumulatedText + subtext
                 } else {
                     text = subtext
                 }
@@ -154,7 +154,7 @@ extension InlineElement: MarkinTextOrImageConvertible {
                 .foregroundColor(Color.blue)
                 .underline(true, color: Color.blue)
         case let element as TextElement:
-            return Text(element.content.trimmingCharacters(in: .whitespacesAndNewlines))
+            return Text(element.content.trimmingCharacters(in: .newlines))
         default:
             return nil
         }

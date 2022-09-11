@@ -62,6 +62,12 @@ Create *library* package:
 swift package init --type library
 ```
 
+# How do I contact the maker of the app?
+
+Feel free to contact us by email at *been@apparata.se*. We appreciate feedback!
+
+We are also on Facebook, Twitter, and Instagram, if you would rather contact us there.
+
 HTML test:
 
 ```
@@ -195,10 +201,30 @@ Some of this text *is bold* and some is _in italics_ and some is just plain.
             XCTFail(error.localizedDescription)
         }
     }
+    
+    func testBeenFAQExample() {
+        let exampleMarkin = """
+# How do I contact the maker of the app?
 
-    static var allTests = [
-        ("testExample", testExample),
-        ("testMarkdownCompatibilityMode", testMarkdownCompatibilityMode),
-        ("testBoldAndItalic", testBoldAndItalic),
-    ]
+Feel free to contact us by email at *been@apparata.se*. We appreciate feedback!
+
+We are also on Facebook, Twitter, and Instagram, if you would rather contact us there.
+"""
+        
+        let parser = MarkinParser()
+        
+        do {
+            let document = try parser.parse(exampleMarkin)
+            print(document.formatDebugString())
+            print(document.formatAsMarkin())
+            print(document.formatAsHTML())
+            let jsonData = try JSONEncoder().encode(document)
+            print(String(data: jsonData, encoding: .utf8)!)
+            let decodedDocument = try JSONDecoder().decode(DocumentElement.self, from: jsonData)
+            print(decodedDocument.formatDebugString())
+        } catch {
+            print(error)
+            XCTFail(error.localizedDescription)
+        }
+    }
 }
