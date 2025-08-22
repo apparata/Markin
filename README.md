@@ -1,7 +1,5 @@
 # Markin
 
-[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/) ![license](https://img.shields.io/badge/license-MIT-blue.svg) ![language Swift 5.1](https://img.shields.io/badge/language-Swift%205.1-orange.svg) ![platform iOS macOS tvOS](https://img.shields.io/badge/platform-iOS%20%7C%20tvOS%20%7C%20macOS-lightgrey.svg)
-
 Markin is a Swift library for parsing a Markdown-like text format.
 
 The library is small, supports Swift Package Manager, and does not have any third party dependencies.
@@ -14,7 +12,7 @@ The library has HTML rendering built-in, but external rendering of the element t
 
 ## License
 
-Markin is available under the MIT License. See the LICENSE file in the repository for details.
+Markin is available under the Zero-Clause BSD license. See the LICENSE file in the repository for details.
 
 ## Usage
 
