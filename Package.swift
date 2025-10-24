@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "Markin",
     platforms: [
-        .macOS(.v12), .iOS(.v16), .tvOS(.v16), .visionOS(.v1)
+        .macOS(.v12), .iOS(.v15), .tvOS(.v15), .visionOS(.v1)
     ],
     products: [
         .library(name: "Markin", targets: ["Markin"]),
