@@ -114,22 +114,27 @@ extension Scanner {
     
     func scanText() -> String? {
         var strings: [String] = []
-        
-        // Compensate for image links.
-        if scan("!") {
-            strings.append("!")
-        }
-        
-        // Compensate for links.
-        if scan("[") {
-            strings.append("[")
-        }
-        
+
         while true {
             if let escapedCharacter = scanEscapedCharacter() {
                 strings.append(escapedCharacter)
             } else if let string = scanUpToCharacters(from: CharacterSet(charactersIn: "\\`*_![\n")), !string.isEmpty {
                 strings.append(string)
+            } else if isAtImageStart() {
+                // A real `![caption](url)` follows — stop and let parseImage handle it.
+                break
+            } else if scan("!") {
+                // Bare `!` (not an image marker) — absorb into the running text run
+                // so the paragraph renderer doesn't split it into a separate
+                // TextElement, which would introduce a stray space when rendered
+                // as HTML (e.g. "Hello world!" rendering as "Hello world !").
+                strings.append("!")
+            } else if isAtLinkStart() {
+                // A real `[caption](url)` follows — stop and let parseLink handle it.
+                break
+            } else if scan("[") {
+                // Bare `[` (not a link) — absorb into the running text run.
+                strings.append("[")
             } else {
                 break
             }
@@ -139,6 +144,30 @@ extension Scanner {
         } else {
             return strings.joined()
         }
+    }
+
+    /// Returns true if the scanner is positioned at the start of a well-formed
+    /// image: `![caption](url)`. Does not advance the scanner.
+    private func isAtImageStart() -> Bool {
+        let position = currentIndex
+        defer { currentIndex = position }
+        guard scan("![") else { return false }
+        guard scanUpToCharacters(from: CharacterSet(charactersIn: "]\n")) != nil else { return false }
+        guard scan("](") else { return false }
+        guard scanUpToCharacters(from: CharacterSet(charactersIn: ")\n")) != nil else { return false }
+        return scan(")")
+    }
+
+    /// Returns true if the scanner is positioned at the start of a well-formed
+    /// link: `[caption](url)`. Does not advance the scanner.
+    private func isAtLinkStart() -> Bool {
+        let position = currentIndex
+        defer { currentIndex = position }
+        guard scan("[") else { return false }
+        guard scanUpToCharacters(from: CharacterSet(charactersIn: "]\n")) != nil else { return false }
+        guard scan("](") else { return false }
+        guard scanUpToCharacters(from: CharacterSet(charactersIn: ")\n")) != nil else { return false }
+        return scan(")")
     }
     
     func scanEscapedCharacter() -> String? {
